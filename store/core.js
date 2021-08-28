@@ -1,19 +1,10 @@
 export function createInitialState() {
     return {
-        numberOfPlayers: 0,
         players: [
             {life: 40, id: 1},
             {life: 40, id: 2},
         ]
     }
-}
-
-export function addPlayer(state) {
-    return state;
-}
-
-export function removePlayer(state) {
-    return state;
 }
 
 export function setNumberOfPlayers(state, numOfPlayers) {
@@ -26,7 +17,7 @@ export function setNumberOfPlayers(state, numOfPlayers) {
     }
 }
 
-export function updateNumberOfPlayers(state, numberOfPlayers) {
-    return {...state, numberOfPlayers}
+export function getNumberOfPlayers(state) {
+    return state.players.length
 }
 

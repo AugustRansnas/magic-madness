@@ -29,8 +29,6 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
     menuItem: {
-        borderWidth: 3,
-        borderColor: 'red',
         paddingVertical: 20,
         paddingHorizontal: 40
     }
