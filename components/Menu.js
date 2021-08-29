@@ -29,7 +29,7 @@ export default function Menu() {
     const menuItemStyle = [styles.menuItem, {display: isMenuOpen ? '' : 'none'}];
 
     return (
-        <Animated.View style={[styles.menu, {height: animateHeight, /*display: isOpen ? '' : 'none'*/}]}>
+        <Animated.View style={[styles.menu, {height: animateHeight}]}>
             <TouchableOpacity
                 title=""
                 style={menuItemStyle}

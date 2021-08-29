@@ -42,7 +42,7 @@ export default function MainMenuButton() {
             }, {
                 translateY: topPositionAnimation
             }],
-            zIndex: '1000'
+            zIndex: 1000
         }}>
             <TouchableOpacity
                 onPress={() => dispatch({type: 'TOGGLE_MENU'})}>
