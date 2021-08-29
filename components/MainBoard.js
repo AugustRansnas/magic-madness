@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {StyleSheet, View} from "react-native"
 import Menu from './Menu';
 import MenuItem from './MenuItem';
@@ -41,7 +41,6 @@ function PlayerHalf({halfOfPlayers}) {
 
 export default function MainBoard() {
     const {state: {players}} = useStore();
-    const [menuItem, setMenuItem] = useState();
 
     const firstHalf = getFirstHalf(players);
     const secondHalf = getSecondHalf(players);
