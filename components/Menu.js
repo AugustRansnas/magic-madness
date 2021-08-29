@@ -26,38 +26,42 @@ export default function Menu() {
         outputRange: ['0%', '10%']
     })
 
-    const menuItemStyle = [styles.menuItem, {display: isMenuOpen ? 'block' : 'none'}];
+    const menuItemStyle = [styles.menuItem];
 
     return (
         <Animated.View style={[styles.menu, {height: animateHeight}]}>
-            <TouchableOpacity
-                title=""
-                style={menuItemStyle}
-                onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
-            >
-                <SelectNumberOfPlayersSvg width={50} height={30}/>
-            </TouchableOpacity>
-            <TouchableOpacity
-                title=""
-                style={menuItemStyle}
-                onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
-            >
-                <SelectNumberOfPlayersSvg width={50} height={30}/>
-            </TouchableOpacity>
-            <TouchableOpacity
-                title=""
-                style={menuItemStyle}
-                onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
-            >
-                <SelectNumberOfPlayersSvg width={50} height={30}/>
-            </TouchableOpacity>
-            <TouchableOpacity
-                title=""
-                style={menuItemStyle}
-                onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
-            >
-                <SelectNumberOfPlayersSvg width={50} height={30}/>
-            </TouchableOpacity>
+            {isMenuOpen ?
+                <View style={styles.menu}>
+                    <TouchableOpacity
+                        title=""
+                        style={menuItemStyle}
+                        onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
+                    >
+                        <SelectNumberOfPlayersSvg width={50} height={30}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        title=""
+                        style={menuItemStyle}
+                        onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
+                    >
+                        <SelectNumberOfPlayersSvg width={50} height={30}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        title=""
+                        style={menuItemStyle}
+                        onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
+                    >
+                        <SelectNumberOfPlayersSvg width={50} height={30}/>
+                    </TouchableOpacity>
+                    <TouchableOpacity
+                        title=""
+                        style={menuItemStyle}
+                        onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
+                    >
+                        <SelectNumberOfPlayersSvg width={50} height={30}/>
+                    </TouchableOpacity>
+                </View>
+            : null}
         </Animated.View>
     )
 }
