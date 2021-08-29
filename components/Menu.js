@@ -1,34 +1,77 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
-import {useStore} from '../store/store';
+import React, {useEffect, useRef} from 'react';
+import {Animated, Easing, StyleSheet, TouchableOpacity, View} from 'react-native';
 import SelectNumberOfPlayersSvg from "../assets/number-of-players-button.svg";
+import {useStore} from "../store/store";
 
-
-export default function Menu({setMenuItem}) {
+export default function Menu() {
     const {state, dispatch} = useStore();
+    const isMenuOpen = state.isMenuOpen;
+    const height = useRef(new Animated.Value(0)).current;
+
+    useEffect(() => {
+        Animated.timing(
+            height,
+            {
+                toValue: isMenuOpen ? 10 : 0,
+                duration: 400,
+                easing: Easing.linear,
+                useNativeDriver: false
+            }
+        ).start();
+    }, [isMenuOpen])
+
+
+    const animateHeight = height.interpolate({
+        inputRange: [0, 10],
+        outputRange: ['0%', '10%']
+    })
+
+    const menuItemStyle = [styles.menuItem, {display: isMenuOpen ? '' : 'none'}];
 
     return (
-        <View style={styles.menu}>
+        <Animated.View style={[styles.menu, {height: animateHeight, /*display: isOpen ? '' : 'none'*/}]}>
             <TouchableOpacity
                 title=""
-                style={styles.menuItem}
-                onPress={() => setMenuItem('numberOfPlayers')}
+                style={menuItemStyle}
+                onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
             >
                 <SelectNumberOfPlayersSvg width={50} height={30}/>
             </TouchableOpacity>
-        </View>
+            <TouchableOpacity
+                title=""
+                style={menuItemStyle}
+                onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
+            >
+                <SelectNumberOfPlayersSvg width={50} height={30}/>
+            </TouchableOpacity>
+            <TouchableOpacity
+                title=""
+                style={menuItemStyle}
+                onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
+            >
+                <SelectNumberOfPlayersSvg width={50} height={30}/>
+            </TouchableOpacity>
+            <TouchableOpacity
+                title=""
+                style={menuItemStyle}
+                onPress={() => dispatch({type: 'SET_MENU_ITEM', data: 'selectNumberOfPlayers'})}
+            >
+                <SelectNumberOfPlayersSvg width={50} height={30}/>
+            </TouchableOpacity>
+        </Animated.View>
     )
 }
 
 const styles = StyleSheet.create({
     menu: {
-        height: '10%',
-        backgroundColor: 'rebeccapurple',
         flexDirection: 'row',
+        //height: '100%',
+        backgroundColor: 'rebeccapurple',
         justifyContent: 'space-evenly',
         alignItems: 'center'
     },
     menuItem: {
+        overflow: 'hidden',
         paddingVertical: 20,
         paddingHorizontal: 40
     }

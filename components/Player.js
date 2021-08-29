@@ -1,7 +1,15 @@
 import React, {useRef} from 'react';
-import {Animated, Easing, StyleSheet, Text} from 'react-native';
+import {Animated, Easing, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useStore} from '../store/store';
 import * as core from '../store/core';
+
+const colors = {
+    FOREST: '#00733d',
+    ISLAND: '#0e68ab',
+    SWAMP: '#150b00',
+    PLAINS: '#f8e7b9',
+    MOUNTAIN: '#d32029'
+}
 
 const rotations = {
     2: {
@@ -26,7 +34,7 @@ function calculateRotation(numberOfPlayers, id) {
 }
 
 export default function Player({width, player}) {
-    const {state} = useStore();
+    const {state, dispatch} = useStore();
     const numberOfPlayers = core.getNumberOfPlayers(state)
 
     const rotation = useRef(new Animated.Value(0)).current;
@@ -47,24 +55,51 @@ export default function Player({width, player}) {
     })
 
     return (
-        <Animated.View style={[styles.player,
-            {
-                transform: [{
-                    rotate: spin,
-                }],
-                width
-            }
-        ]}>
-            <Text>Id: {player.id}</Text>
-            <Text>Life: {player.life}</Text>
-        </Animated.View>
+        <View style={[styles.playerContainer, {width}]}>
+            <Animated.View style={[
+                {
+                    transform: [{
+                        rotate: spin,
+                    }],
+                }
+            ]}>
+                <View style={styles.player}>
+                    <TouchableOpacity onPress={() => dispatch({type: 'SUBTRACT_DMG', data: player})}>
+                        <Text style={styles.mainDmgButton}>-</Text>
+                    </TouchableOpacity>
+                    <Text style={styles.playerText}>{player.life}</Text>
+                    <TouchableOpacity onPress={() => dispatch({type: 'ADD_DMG', data: player})}>
+                        <Text style={styles.mainDmgButton}>+</Text>
+                    </TouchableOpacity>
+                </View>
+            </Animated.View>
+
+        </View>
     )
 }
 
 
 const styles = StyleSheet.create({
-    player: {
+    playerContainer: {
         justifyContent: 'center',
-        alignItems: 'center'
+        alignItems: 'center',
+        borderWidth: 1,
+        borderColor: 'gold',
+        backgroundColor: 'grey',
+        borderRadius: 8
+    },
+    player: {
+        flexDirection: 'row',
+        borderWidth: 2,
+        borderColor: 'green'
+    },
+    playerText: {
+        fontSize: 60,
+        fontWeight: 'bold'
+    },
+    mainDmgButton: {
+        fontSize: 60,
+        fontWeight: 'bold',
+        marginHorizontal: 20
     }
 });

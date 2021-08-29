@@ -4,6 +4,7 @@ import Menu from './Menu';
 import MenuItem from './MenuItem';
 import Player from './Player';
 import {useStore} from "../store/store";
+import MainMenuButton from "./MainMenuButton";
 
 function calculatePlayerWidth(halfOfPlayers) {
     return halfOfPlayers.length === 1 ? '100%' : '50%'
@@ -39,7 +40,7 @@ function PlayerHalf({halfOfPlayers}) {
 
 
 export default function MainBoard() {
-    const {state: {players}, dispatch} = useStore();
+    const {state: {players}} = useStore();
     const [menuItem, setMenuItem] = useState();
 
     const firstHalf = getFirstHalf(players);
@@ -48,8 +49,9 @@ export default function MainBoard() {
     return (
         <View style={styles.container}>
             <PlayerHalf halfOfPlayers={firstHalf}/>
-            <MenuItem setMenuItem={setMenuItem} selectedItem={menuItem}/>
-            <Menu setMenuItem={setMenuItem}/>
+            <MenuItem />
+            <MainMenuButton />
+            <Menu/>
             <PlayerHalf halfOfPlayers={secondHalf}/>
         </View>
     );
@@ -62,7 +64,8 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between'
     },
     playerHalf: {
-        height: '45%',
-        flexDirection: 'row'
+        height: '50%',
+        flexDirection: 'row',
+        flexShrink: 1
     }
 });

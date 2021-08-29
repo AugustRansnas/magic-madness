@@ -2,16 +2,17 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useStore} from "../store/store";
 
-export default function MenuItem({selectedItem, setMenuItem}) {
-    const {dispatch} = useStore();
-    return selectedItem ? (
+export default function MenuItem() {
+    const {state, dispatch} = useStore();
+    return state.selectedMenuItem === 'selectNumberOfPlayers' ? (
         <View style={styles.menuItem}>
             <View style={styles.numOfPlayers}>
                 {[2, 3, 4].map((numOfPlayers) =>
                     <TouchableOpacity key={numOfPlayers}
                                       onPress={() => {
                                           dispatch({type: 'SET_NUMBER_OF_PLAYERS', data: numOfPlayers})
-                                          setMenuItem(null)
+                                          dispatch({type: 'SET_MENU_ITEM', data: null})
+                                          dispatch({type: 'TOGGLE_MENU'})
                                       }
                                       }>
                         <Text style={styles.selectNumOfPlayers}>
@@ -21,7 +22,7 @@ export default function MenuItem({selectedItem, setMenuItem}) {
                 }
             </View>
         </View>
-    ): null;
+    ) : null;
 }
 
 const styles = StyleSheet.create({
