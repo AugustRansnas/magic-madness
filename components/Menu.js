@@ -26,7 +26,7 @@ export default function Menu() {
         outputRange: ['0%', '10%']
     })
 
-    const menuItemStyle = [styles.menuItem, {display: isMenuOpen ? '' : 'none'}];
+    const menuItemStyle = [styles.menuItem, {display: isMenuOpen ? 'block' : 'none'}];
 
     return (
         <Animated.View style={[styles.menu, {height: animateHeight}]}>
