@@ -27,7 +27,7 @@ export default function MainMenuButton() {
             topPositionAnimation,
             {
                 toValue: calculatedPositions.top,
-                duration: 400,
+                duration: 350,
                 easing: Easing.linear,
                 useNativeDriver: true
             }
