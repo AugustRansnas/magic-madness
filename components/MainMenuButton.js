@@ -45,7 +45,10 @@ export default function MainMenuButton() {
             zIndex: 1000
         }}>
             <TouchableOpacity
-                onPress={() => dispatch({type: 'TOGGLE_MENU'})}>
+                onPress={() => {
+                    dispatch({type: 'TOGGLE_MENU'});
+                    dispatch({type: 'SET_MENU_ITEM', data: null});
+                }}>
                 <Svg height={menuButtonHeight} width={menuButtonWidth} viewBox="0 0 100 100">
                     <Circle cx="50" cy="50" r="45" stroke="black" strokeWidth="2.5" fill="green"/>
                 </Svg>

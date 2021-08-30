@@ -1,4 +1,4 @@
-import React, {useRef} from 'react';
+import React, {useRef, useState} from 'react';
 import {Animated, Easing, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useStore} from '../store/store';
 import * as core from '../store/core';
@@ -29,6 +29,7 @@ const rotations = {
     }
 };
 
+
 function calculateRotation(numberOfPlayers, id) {
     return rotations[numberOfPlayers][id];
 }
@@ -36,6 +37,30 @@ function calculateRotation(numberOfPlayers, id) {
 export default function Player({width, player}) {
     const {state, dispatch} = useStore();
     const numberOfPlayers = core.getNumberOfPlayers(state)
+    const [recentDmg, setRecentDmg] = useState(null);
+
+    const addDmg = () => {
+        setRecentDmg(recentDmg + 1);
+    }
+
+    const subtractDmg = () => {
+        setRecentDmg(recentDmg - 1);
+    }
+
+    const resetRecentDmg = () => {
+        setRecentDmg(null);
+    }
+
+    const timer = useRef(null);
+
+    function doDmg(fn, resetFn) {
+        clearTimeout(timer.current);
+        fn()
+
+        timer.current = setTimeout(function () {
+            resetFn(0)
+        }, 2000)
+    }
 
     const rotation = useRef(new Animated.Value(0)).current;
 
@@ -63,12 +88,21 @@ export default function Player({width, player}) {
                     }],
                 }
             ]}>
-                <View style={styles.player}>
-                    <TouchableOpacity onPress={() => dispatch({type: 'SUBTRACT_DMG', data: player})}>
+                <View style={styles.recentDmg}>
+                    <Text style={styles.recentDmgText}>{recentDmg}</Text>
+                </View>
+                <View style={styles.lifeBox}>
+                    <TouchableOpacity onPress={() => {
+                        dispatch({type: 'SUBTRACT_DMG', data: player})
+                        doDmg(subtractDmg, resetRecentDmg)
+                    }}>
                         <Text style={styles.mainDmgButton}>-</Text>
                     </TouchableOpacity>
-                    <Text style={styles.playerText}>{player.life}</Text>
-                    <TouchableOpacity onPress={() => dispatch({type: 'ADD_DMG', data: player})}>
+                    <Text style={styles.lifeText}>{player.life}</Text>
+                    <TouchableOpacity onPress={() => {
+                        dispatch({type: 'ADD_DMG', data: player})
+                        doDmg(addDmg, resetRecentDmg)
+                    }}>
                         <Text style={styles.mainDmgButton}>+</Text>
                     </TouchableOpacity>
                 </View>
@@ -84,31 +118,25 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
-/*
-        borderColor: 'gold',
-        backgroundColor: 'grey',
-*/
         borderRadius: 8
     },
-    player: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-/*
-        borderWidth: 2,
-        borderColor: 'green'
-*/
+    recentDmg: {
+        alignSelf: 'center'
     },
-    playerText: {
+    recentDmgText: {
+        fontSize: 30
+    },
+    lifeBox: {
+        flexDirection: 'row',
+        justifyContent: 'space-evenly'
+    },
+    lifeText: {
         fontSize: 60,
-        fontWeight: 'bold',
+        fontWeight: 'bold'
     },
     mainDmgButton: {
         fontSize: 60,
         fontWeight: 'bold',
-        paddingHorizontal: 20,
-/*
-        borderWidth: 2,
-        borderColor: 'red'
-*/
+        paddingHorizontal: 20
     }
 });

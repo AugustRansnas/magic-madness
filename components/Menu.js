@@ -62,7 +62,7 @@ export default function Menu() {
 const styles = StyleSheet.create({
     menu: {
         flexDirection: 'row',
-        backgroundColor: 'rebeccapurple',
+        //backgroundColor: 'rebeccapurple',
         justifyContent: 'space-evenly',
         alignItems: 'center'
     },
