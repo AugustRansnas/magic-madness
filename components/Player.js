@@ -84,22 +84,31 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         borderWidth: 1,
+/*
         borderColor: 'gold',
         backgroundColor: 'grey',
+*/
         borderRadius: 8
     },
     player: {
         flexDirection: 'row',
+        justifyContent: 'space-evenly',
+/*
         borderWidth: 2,
         borderColor: 'green'
+*/
     },
     playerText: {
         fontSize: 60,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
     },
     mainDmgButton: {
         fontSize: 60,
         fontWeight: 'bold',
-        marginHorizontal: 20
+        paddingHorizontal: 20,
+/*
+        borderWidth: 2,
+        borderColor: 'red'
+*/
     }
 });

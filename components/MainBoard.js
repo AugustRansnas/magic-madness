@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, View} from "react-native"
 import Menu from './Menu';
-import MenuItem from './MenuItem';
+import SelectNumberOfPlayers from './SelectNumberOfPlayers';
 import Player from './Player';
 import {useStore} from "../store/store";
 import MainMenuButton from "./MainMenuButton";
@@ -48,7 +48,6 @@ export default function MainBoard() {
     return (
         <View style={styles.container}>
             <PlayerHalf halfOfPlayers={firstHalf}/>
-            <MenuItem />
             <MainMenuButton />
             <Menu/>
             <PlayerHalf halfOfPlayers={secondHalf}/>
