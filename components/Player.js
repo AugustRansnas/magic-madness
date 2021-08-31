@@ -1,5 +1,5 @@
-import React, {useRef, useState} from 'react';
-import {Animated, Easing, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useMemo, useRef, useState} from 'react';
+import {Animated, Dimensions, Easing, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useStore} from '../store/store';
 import actions from "../store/actions";
 import * as core from '../store/core';
@@ -29,6 +29,10 @@ const rotations = {
         4: -90
     }
 };
+
+function isPlayerRotated(numberOfPlayers, id) {
+    return rotations[numberOfPlayers][id] !== 0;
+}
 
 
 function calculateRotation(numberOfPlayers, id) {
@@ -65,20 +69,33 @@ export default function Player({width, player}) {
 
     const rotation = useRef(new Animated.Value(0)).current;
 
-    Animated.timing(
-        rotation,
-        {
-            toValue: calculateRotation(numberOfPlayers, player.id),
-            duration: 750,
-            easing: Easing.bounce,
-            useNativeDriver: true
-        }
-    ).start()
+    useEffect(() => {
+        Animated.timing(
+            rotation,
+            {
+                toValue: calculateRotation(numberOfPlayers, player.id),
+                duration: 750,
+                easing: Easing.bounce,
+                useNativeDriver: true
+            }
+        ).start()
+    }, [numberOfPlayers])
 
     const spin = rotation.interpolate({
         inputRange: [-90, 90],
         outputRange: ['-90deg', '90deg']
     })
+
+    const isRotated = isPlayerRotated(numberOfPlayers, player.id);
+    const mainDmgButtonPadding = isRotated ? 0 : 50;
+    const lifeWidth = 100;
+
+    const lifePositionLeft = useMemo(() => {
+        console.log('position left! new')
+        const windowWidth = Dimensions.get('window').width;
+        const lifeWidthOffset = (lifeWidth / 2);
+        return isRotated ? (windowWidth / 4) - lifeWidthOffset : (windowWidth / 2) - lifeWidthOffset
+    }, [numberOfPlayers])
 
     return (
         <View style={[styles.playerContainer, {width}]}>
@@ -89,26 +106,31 @@ export default function Player({width, player}) {
                     }],
                 }
             ]}>
-                <View style={styles.recentDmg}>
-                    <Text style={styles.recentDmgText}>{recentDmg}</Text>
-                </View>
-                <View style={styles.lifeBox}>
-                    <TouchableOpacity onPress={() => {
-                        dispatch({type: actions.SUBTRACT_DMG, data: player})
-                        doDmg(subtractDmg, resetRecentDmg)
-                    }}>
-                        <Text style={styles.mainDmgButton}>-</Text>
-                    </TouchableOpacity>
-                    <Text style={styles.lifeText}>{player.life}</Text>
-                    <TouchableOpacity onPress={() => {
-                        dispatch({type: actions.ADD_DMG, data: player})
-                        doDmg(addDmg, resetRecentDmg)
-                    }}>
-                        <Text style={styles.mainDmgButton}>+</Text>
-                    </TouchableOpacity>
+                <View style={styles.dmgContainer}>
+                    <View style={styles.recentDmg}>
+                        <Text style={styles.recentDmgText}>{recentDmg}</Text>
+                    </View>
+                    <View style={styles.dmgInputContainer}>
+                        <TouchableOpacity style={[styles.mainDmgButton, {paddingLeft: mainDmgButtonPadding}]}
+                                          onPress={() => {
+                                              dispatch({type: actions.SUBTRACT_DMG, data: player})
+                                              doDmg(subtractDmg, resetRecentDmg)
+                                          }}>
+                            <Text style={[styles.mainDmgButtonText, {textAlign: 'left'}]}>-</Text>
+                        </TouchableOpacity>
+                        <View style={[styles.lifeBox, {width: lifeWidth, left: lifePositionLeft}]}>
+                            <Text style={[styles.lifeText, {fontSize: isRotated ? 50 : 60}]}>{player.life}</Text>
+                        </View>
+                        <TouchableOpacity style={[styles.mainDmgButton, {paddingRight: mainDmgButtonPadding}]}
+                                          onPress={() => {
+                                              dispatch({type: actions.ADD_DMG, data: player})
+                                              doDmg(addDmg, resetRecentDmg)
+                                          }}>
+                            <Text style={[styles.mainDmgButtonText, {textAlign: 'right'}]}>+</Text>
+                        </TouchableOpacity>
+                    </View>
                 </View>
             </Animated.View>
-
         </View>
     )
 }
@@ -117,27 +139,38 @@ export default function Player({width, player}) {
 const styles = StyleSheet.create({
     playerContainer: {
         justifyContent: 'center',
-        alignItems: 'center',
         borderWidth: 1,
         borderRadius: 8
     },
+    dmgContainer: {
+        flexDirection: 'column',
+        alignItems: 'center'
+    },
+    dmgInputContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
     recentDmg: {
-        alignSelf: 'center'
+        position: 'absolute',
+        bottom: 75
     },
     recentDmgText: {
         fontSize: 30
     },
     lifeBox: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly'
+        position: 'absolute',
+        zIndex: -1,
+    },
+    mainDmgButton: {
+        flex: 1,
     },
     lifeText: {
+        textAlign: 'center',
         fontSize: 60,
         fontWeight: 'bold'
     },
-    mainDmgButton: {
+    mainDmgButtonText: {
         fontSize: 60,
-        fontWeight: 'bold',
-        paddingHorizontal: 20
+        fontWeight: 'bold'
     }
 });

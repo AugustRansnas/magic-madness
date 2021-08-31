@@ -2,7 +2,7 @@ import React, {useEffect, useRef} from 'react';
 import {Animated, Easing, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useStore} from "../store/store";
 import actions from '../store/actions'
-import SelectNumberOfPlayersSvg from "../assets/number-of-players-button.svg";
+import SelectNumberOfPlayersSvg from "../assets/number-of-players.svg";
 import ResetSvg from '../assets/reset.svg';
 import DiceSvg from '../assets/dice.svg';
 import SettingsSvg from '../assets/settings.svg';
