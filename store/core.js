@@ -72,3 +72,12 @@ export function setMenuItem(state, data) {
         selectedMenuItem: data
     }
 }
+
+export function resetLife(state) {
+    return {
+        ...state,
+        players: state.players.map((player) => (
+            {...player, life: 40}
+        ))
+    }
+}

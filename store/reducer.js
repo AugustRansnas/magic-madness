@@ -1,18 +1,21 @@
+import actions from './actions';
 import * as core from "./core";
 
 export default function reducer(state, action) {
     const {type, data} = action
     switch (type) {
-        case 'SET_NUMBER_OF_PLAYERS':
+        case actions.SET_NUMBER_OF_PLAYERS:
             return core.setNumberOfPlayers(state, data);
-        case 'ADD_DMG':
+        case actions.ADD_DMG:
             return core.addDmg(state, data);
-        case 'SUBTRACT_DMG':
+        case actions.SUBTRACT_DMG:
             return core.subtractDmg(state, data);
-        case 'TOGGLE_MENU':
+        case actions.TOGGLE_MENU:
             return core.toggleMenu(state);
-        case 'SET_MENU_ITEM':
+        case actions.SET_MENU_ITEM:
             return core.setMenuItem(state, data);
+        case actions.RESET_LIFE:
+            return core.resetLife(state);
         default:
             throw new Error();
     }

@@ -1,0 +1,10 @@
+const actions = {
+    SET_NUMBER_OF_PLAYERS: 'SET_NUMBER_OF_PLAYERS',
+    ADD_DMG: 'ADD_DMG',
+    SUBTRACT_DMG: 'SUBTRACT_DMG',
+    TOGGLE_MENU: 'TOGGLE_MENU',
+    SET_MENU_ITEM: 'SET_MENU_ITEM',
+    RESET_LIFE: 'RESET_LIFE'
+}
+
+export default actions;

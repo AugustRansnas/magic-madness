@@ -1,6 +1,7 @@
 import React, {useRef, useState} from 'react';
 import {Animated, Easing, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useStore} from '../store/store';
+import actions from "../store/actions";
 import * as core from '../store/core';
 
 const colors = {
@@ -93,14 +94,14 @@ export default function Player({width, player}) {
                 </View>
                 <View style={styles.lifeBox}>
                     <TouchableOpacity onPress={() => {
-                        dispatch({type: 'SUBTRACT_DMG', data: player})
+                        dispatch({type: actions.SUBTRACT_DMG, data: player})
                         doDmg(subtractDmg, resetRecentDmg)
                     }}>
                         <Text style={styles.mainDmgButton}>-</Text>
                     </TouchableOpacity>
                     <Text style={styles.lifeText}>{player.life}</Text>
                     <TouchableOpacity onPress={() => {
-                        dispatch({type: 'ADD_DMG', data: player})
+                        dispatch({type: actions.ADD_DMG, data: player})
                         doDmg(addDmg, resetRecentDmg)
                     }}>
                         <Text style={styles.mainDmgButton}>+</Text>
