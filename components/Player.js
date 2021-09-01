@@ -1,8 +1,10 @@
-import React, {useEffect, useMemo, useRef, useState} from 'react';
-import {Animated, Dimensions, Easing, StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useRef} from 'react';
+import {Animated, Easing, StyleSheet, View} from 'react-native';
+import Carousel from 'react-native-snap-carousel';
 import {useStore} from '../store/store';
 import actions from "../store/actions";
 import * as core from '../store/core';
+import Damage from "./Damage";
 
 const colors = {
     FOREST: '#00733d',
@@ -30,44 +32,21 @@ const rotations = {
     }
 };
 
-function isPlayerRotated(numberOfPlayers, id) {
-    return rotations[numberOfPlayers][id] !== 0;
-}
-
 
 function calculateRotation(numberOfPlayers, id) {
     return rotations[numberOfPlayers][id];
 }
 
-export default function Player({width, player}) {
+function isPlayerRotated(numberOfPlayers, id) {
+    return calculateRotation(numberOfPlayers, id) !== 0;
+}
+
+export default function Temp({width, player}) {
     const {state, dispatch} = useStore();
-    const numberOfPlayers = core.getNumberOfPlayers(state)
-    const [recentDmg, setRecentDmg] = useState(null);
-
-    const addDmg = () => {
-        setRecentDmg(recentDmg + 1);
-    }
-
-    const subtractDmg = () => {
-        setRecentDmg(recentDmg - 1);
-    }
-
-    const resetRecentDmg = () => {
-        setRecentDmg(null);
-    }
-
-    const timer = useRef(null);
-
-    function doDmg(fn, resetFn) {
-        clearTimeout(timer.current);
-        fn()
-
-        timer.current = setTimeout(function () {
-            resetFn(0)
-        }, 2000)
-    }
-
     const rotation = useRef(new Animated.Value(0)).current;
+    const numberOfPlayers = core.getNumberOfPlayers(state);
+    const isRotated = isPlayerRotated(numberOfPlayers, player.id);
+    const {windowWidth, windowHeight} = core.getWindow();
 
     useEffect(() => {
         Animated.timing(
@@ -86,15 +65,7 @@ export default function Player({width, player}) {
         outputRange: ['-90deg', '90deg']
     })
 
-    const isRotated = isPlayerRotated(numberOfPlayers, player.id);
-    const mainDmgButtonPadding = isRotated ? 0 : 50;
-    const lifeWidth = 100;
-
-    const lifePositionLeft = useMemo(() => {
-        const windowWidth = Dimensions.get('window').width;
-        const lifeWidthOffset = (lifeWidth / 2);
-        return isRotated ? (windowWidth / 4) - lifeWidthOffset : (windowWidth / 2) - lifeWidthOffset
-    }, [numberOfPlayers])
+    const height = isRotated ? windowWidth / 2 : windowHeight / 2
 
     return (
         <View style={[styles.playerContainer, {width}]}>
@@ -105,30 +76,33 @@ export default function Player({width, player}) {
                     }],
                 }
             ]}>
-                <View style={styles.dmgContainer}>
-                    <View style={styles.recentDmg}>
-                        <Text style={styles.recentDmgText}>{recentDmg}</Text>
-                    </View>
-                    <View style={styles.dmgInputContainer}>
-                        <TouchableOpacity style={[styles.mainDmgButton, {paddingLeft: mainDmgButtonPadding}]}
-                                          onPress={() => {
-                                              dispatch({type: actions.SUBTRACT_DMG, data: player})
-                                              doDmg(subtractDmg, resetRecentDmg)
-                                          }}>
-                            <Text style={[styles.mainDmgButtonText, {textAlign: 'left'}]}>-</Text>
-                        </TouchableOpacity>
-                        <View style={[styles.lifeBox, {width: lifeWidth, left: lifePositionLeft}]}>
-                            <Text style={[styles.lifeText, {fontSize: isRotated ? 50 : 60}]}>{player.life}</Text>
-                        </View>
-                        <TouchableOpacity style={[styles.mainDmgButton, {paddingRight: mainDmgButtonPadding}]}
-                                          onPress={() => {
-                                              dispatch({type: actions.ADD_DMG, data: player})
-                                              doDmg(addDmg, resetRecentDmg)
-                                          }}>
-                            <Text style={[styles.mainDmgButtonText, {textAlign: 'right'}]}>+</Text>
-                        </TouchableOpacity>
-                    </View>
-                </View>
+                <Carousel
+                    data={[
+                        {
+                            addDmg: () => dispatch({type: actions.ADD_DMG, data: player}),
+                            subtractDmg: () => dispatch({type: actions.SUBTRACT_DMG, data: player}),
+                            showRecentDmg: true
+                        },
+                        {
+                            addDmg: () => console.log('todo! +'),
+                            subtractDmg: () => console.log('todo! -'),
+                        }
+                    ]}
+                    renderItem={({item: {addDmg, subtractDmg, showRecentDmg}}) => {
+                        return (
+                            <Damage
+                                player={player}
+                                isRotated={isRotated}
+                                addDmg={addDmg}
+                                subtractDmg={subtractDmg}
+                                showRecentDmg={showRecentDmg}
+                            />
+                        )
+                    }}
+                    vertical
+                    sliderHeight={height}
+                    itemHeight={height}
+                />
             </Animated.View>
         </View>
     )
@@ -140,36 +114,5 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         borderWidth: 1,
         borderRadius: 8
-    },
-    dmgContainer: {
-        flexDirection: 'column',
-        alignItems: 'center'
-    },
-    dmgInputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-    },
-    recentDmg: {
-        position: 'absolute',
-        bottom: 75
-    },
-    recentDmgText: {
-        fontSize: 30
-    },
-    lifeBox: {
-        position: 'absolute',
-        zIndex: -1,
-    },
-    mainDmgButton: {
-        flex: 1,
-    },
-    lifeText: {
-        textAlign: 'center',
-        fontSize: 60,
-        fontWeight: 'bold'
-    },
-    mainDmgButtonText: {
-        fontSize: 60,
-        fontWeight: 'bold'
     }
 });
