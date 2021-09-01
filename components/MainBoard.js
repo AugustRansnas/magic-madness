@@ -1,49 +1,29 @@
 import React from 'react';
 import {StyleSheet, View} from "react-native"
 import Menu from './Menu';
-import SelectNumberOfPlayers from './SelectNumberOfPlayers';
 import Player from './Player';
 import {useStore} from "../store/store";
+import * as core from '../store/core';
 import MainMenuButton from "./MainMenuButton";
 
-function calculatePlayerWidth(halfOfPlayers) {
-    return halfOfPlayers.length === 1 ? '100%' : '50%'
-}
-
-function getFirstHalf(players) {
-    const length = players.length;
-    if (length === 4 || length === 3) {
-        return players.slice(0, 2)
-    }
-    return players.slice(0, 1)
-}
-
-function getSecondHalf(players) {
-    const length = players.length;
-    if (length === 4) {
-        return players.slice(-2)
-    }
-    return players.slice(-1)
-}
-
 function PlayerHalf({halfOfPlayers}) {
+    const width = halfOfPlayers.length === 1 ? '100%' : '50%'
     return (
         <View style={styles.playerHalf}>
             {halfOfPlayers.map((player) =>
                 <Player key={player.id}
-                        width={calculatePlayerWidth(halfOfPlayers)}
+                        width={width}
                         player={player}/>
             )}
         </View>
     );
 }
 
-
 export default function MainBoard() {
-    const {state: {players}} = useStore();
+    const {state} = useStore();
 
-    const firstHalf = getFirstHalf(players);
-    const secondHalf = getSecondHalf(players);
+    const firstHalf = core.getFirstPlayerHalf(state);
+    const secondHalf = core.getSecondPlayerHalf(state);
 
     return (
         <View style={styles.container}>

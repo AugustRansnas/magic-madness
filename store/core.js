@@ -81,3 +81,19 @@ export function resetLife(state) {
         ))
     }
 }
+
+export function getFirstPlayerHalf({players}) {
+    const length = players.length;
+    if (length === 4 || length === 3) {
+        return players.slice(0, 2)
+    }
+    return players.slice(0, 1)
+}
+
+export function getSecondPlayerHalf({players}) {
+    const length = players.length;
+    if (length === 4) {
+        return players.slice(-2)
+    }
+    return players.slice(-1)
+}

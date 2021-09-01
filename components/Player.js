@@ -91,7 +91,6 @@ export default function Player({width, player}) {
     const lifeWidth = 100;
 
     const lifePositionLeft = useMemo(() => {
-        console.log('position left! new')
         const windowWidth = Dimensions.get('window').width;
         const lifeWidthOffset = (lifeWidth / 2);
         return isRotated ? (windowWidth / 4) - lifeWidthOffset : (windowWidth / 2) - lifeWidthOffset
