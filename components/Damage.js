@@ -3,11 +3,11 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as core from "../store/core";
 
 export default function Damage({
-                                   player,
                                    isRotated,
                                    addDmg,
                                    subtractDmg,
-                                   showRecentDmg
+                                   showRecentDmg,
+                                   hitPoints
                                }) {
     const {windowWidth, windowHeight} = core.getWindow();
     const [recentDmg, setRecentDmg] = useState(null);
@@ -37,10 +37,6 @@ export default function Damage({
         }
     }
 
-    const mainDmgButtonPadding = isRotated ? 0 : 50;
-    const lifeWidth = 100;
-    const lifeWidthOffset = (lifeWidth / 2);
-    const lifePositionLeft = isRotated ? (windowWidth / 4) - lifeWidthOffset : (windowWidth / 2) - lifeWidthOffset
     const recentDmgPosition = isRotated ? (windowWidth / 14) : (windowHeight / 7)
 
     return (
@@ -48,19 +44,17 @@ export default function Damage({
             {showRecentDmg && <View style={[styles.recentDmg, {top: recentDmgPosition}]}>
                 <Text style={styles.recentDmgText}>{recentDmg}</Text>
             </View>}
-            <View style={styles.dmgInputContainer}>
-                <TouchableOpacity style={[styles.mainDmgButton, {paddingLeft: mainDmgButtonPadding}]}
-                                  onPress={onSubPress}>
-                    <Text style={[styles.mainDmgButtonText, {textAlign: 'left'}]}>-</Text>
-                </TouchableOpacity>
-                <View style={[styles.lifeBox, {width: lifeWidth, left: lifePositionLeft}]}>
-                    <Text style={[styles.lifeText, {fontSize: isRotated ? 50 : 60}]}>{player.life}</Text>
-                </View>
-                <TouchableOpacity style={[styles.mainDmgButton, {paddingRight: mainDmgButtonPadding}]}
-                                  onPress={onAddPress}>
-                    <Text style={[styles.mainDmgButtonText, {textAlign: 'right'}]}>+</Text>
-                </TouchableOpacity>
+            <TouchableOpacity style={[styles.mainDmgButton]}
+                              onPress={onSubPress}>
+                <Text style={[styles.mainDmgButtonText]}>-</Text>
+            </TouchableOpacity>
+            <View style={[styles.lifeBox]}>
+                <Text style={[styles.lifeText, {fontSize: isRotated ? 50 : 60}]}>{hitPoints}</Text>
             </View>
+            <TouchableOpacity style={[styles.mainDmgButton]}
+                              onPress={onAddPress}>
+                <Text style={[styles.mainDmgButtonText]}>+</Text>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -68,13 +62,9 @@ export default function Damage({
 const styles = StyleSheet.create({
     dmgContainer: {
         flex: 1,
-        flexDirection: 'column',
+        flexDirection: 'row',
         justifyContent: 'center',
         alignItems: 'center'
-    },
-    dmgInputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
     },
     recentDmg: {
         position: 'absolute'
@@ -88,14 +78,17 @@ const styles = StyleSheet.create({
     },
     mainDmgButton: {
         flex: 1,
+        flexDirection: 'column',
+        justifyContent: 'center',
+        height: '100%',
     },
     lifeText: {
-        textAlign: 'center',
         fontSize: 60,
         fontWeight: 'bold'
     },
     mainDmgButtonText: {
         fontSize: 60,
-        fontWeight: 'bold'
+        fontWeight: 'bold',
+        alignSelf: 'center'
     }
 });

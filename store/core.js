@@ -1,4 +1,5 @@
 import {Dimensions} from "react-native";
+import {themes} from "../components/themes";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height
@@ -7,11 +8,27 @@ export function getWindow() {
     return {windowWidth, windowHeight};
 }
 
+function tempTheme(id) {
+    switch (id) {
+        case 1:
+            return themes.PLAINS;
+        case 2:
+            return themes.MOUNTAIN;
+        case 3:
+            return themes.FOREST;
+        case 4:
+            return themes.ISLAND;
+    }
+}
+
 function createPlayer(id) {
     return {
         id,
         life: 40,
-        theme: 'SWAMP'
+        cmdDmg: {
+
+        },
+        theme: tempTheme(id)
     }
 }
 export function createInitialState() {
@@ -68,6 +85,38 @@ export function subtractDmg(state, player) {
     return updateLife(state, player, subtractOne);
 }
 
+function updateCmdDmg(state, player, cmdId, dmgFn) {
+    return {
+        ...state,
+        players: state.players
+            .reduce((result, p) => {
+                if (p.id === player.id) {
+                    return result.concat(
+                        {
+                            ...p,
+                            cmdDmg: {
+                                ...p.cmdDmg,
+                                [cmdId]: dmgFn(p.cmdDmg[cmdId])
+                            }
+                        })
+                }
+                return result.concat(p);
+            }, [])
+    }
+}
+
+export function addCmdDmg(state, {player, cmdId}) {
+    return updateCmdDmg(state, player, cmdId, (value) => value ? value + 1 : 1)
+}
+
+export function subtractCmdDmg(state, {player, cmdId}) {
+    if (state.players.find((p) => p.id === player.id).cmdDmg[cmdId] > 0) {
+        return updateCmdDmg(state, player, cmdId, subtractOne);
+    }
+    return state;
+}
+
+
 export function toggleMenu(state) {
     return {
         ...state,
@@ -86,7 +135,7 @@ export function resetLife(state) {
     return {
         ...state,
         players: state.players.map((player) => (
-            {...player, life: 40}
+            {...player, life: 40, cmdDmg: 0}
         ))
     }
 }

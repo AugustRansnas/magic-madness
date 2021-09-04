@@ -10,6 +10,10 @@ export default function reducer(state, action) {
             return core.addDmg(state, data);
         case actions.SUBTRACT_DMG:
             return core.subtractDmg(state, data);
+        case actions.ADD_CMD_DMG:
+            return core.addCmdDmg(state, data);
+        case actions.SUBTRACT_CMD_DMG:
+            return core.subtractCmdDmg(state, data);
         case actions.TOGGLE_MENU:
             return core.toggleMenu(state);
         case actions.SET_MENU_ITEM:

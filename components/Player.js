@@ -5,14 +5,7 @@ import {useStore} from '../store/store';
 import actions from "../store/actions";
 import * as core from '../store/core';
 import Damage from "./Damage";
-
-const colors = {
-    FOREST: '#00733d',
-    ISLAND: '#0e68ab',
-    SWAMP: '#150b00',
-    PLAINS: '#f8e7b9',
-    MOUNTAIN: '#d32029'
-}
+import Stats from "./Stats";
 
 const rotations = {
     2: {
@@ -68,35 +61,48 @@ export default function Temp({width, player}) {
     const height = isRotated ? windowWidth / 2 : windowHeight / 2
 
     return (
-        <View style={[styles.playerContainer, {width}]}>
+        <View style={[styles.playerContainer, {width, backgroundColor: player.theme}]}>
             <Animated.View style={[
                 {
                     transform: [{
                         rotate: spin,
                     }],
+                    width: isRotated ? windowHeight / 2 : '100%',
                 }
             ]}>
+
                 <Carousel
                     data={[
                         {
                             addDmg: () => dispatch({type: actions.ADD_DMG, data: player}),
                             subtractDmg: () => dispatch({type: actions.SUBTRACT_DMG, data: player}),
-                            showRecentDmg: true
+                            hitPoints: player.life,
+                            showRecentDmg: true,
                         },
-                        {
-                            addDmg: () => console.log('todo! +'),
-                            subtractDmg: () => console.log('todo! -'),
-                        }
+                        ...state.players.map(p => {
+                            if (p.id !== player.id) {
+                                return {
+                                    addDmg: () => dispatch({type: actions.ADD_CMD_DMG, data: {player, cmdId: p.id}}),
+                                    subtractDmg: () => dispatch({type: actions.SUBTRACT_CMD_DMG, data: {player, cmdId: p.id}}),
+                                    hitPoints: player.cmdDmg[p.id],
+                                }
+                            }
+                        }).filter(v => v)
                     ]}
-                    renderItem={({item: {addDmg, subtractDmg, showRecentDmg}}) => {
+                    renderItem={({item: {addDmg, subtractDmg, showRecentDmg, hitPoints, style}}) => {
                         return (
-                            <Damage
-                                player={player}
-                                isRotated={isRotated}
-                                addDmg={addDmg}
-                                subtractDmg={subtractDmg}
-                                showRecentDmg={showRecentDmg}
-                            />
+                            <>
+                                <Stats isRotated={isRotated} playerId={player.id}/>
+                                <Damage
+                                    style={style}
+                                    player={player}
+                                    isRotated={isRotated}
+                                    addDmg={addDmg}
+                                    subtractDmg={subtractDmg}
+                                    hitPoints={hitPoints}
+                                    showRecentDmg={showRecentDmg}
+                                />
+                            </>
                         )
                     }}
                     vertical
@@ -113,6 +119,7 @@ const styles = StyleSheet.create({
     playerContainer: {
         justifyContent: 'center',
         borderWidth: 1,
+        alignItems: 'center',
         borderRadius: 8
     }
 });
