@@ -58,7 +58,8 @@ export default function Temp({width, player}) {
         outputRange: ['-90deg', '90deg']
     })
 
-    const height = isRotated ? windowWidth / 2 : windowHeight / 2
+    const carouselWidth = isRotated ? windowHeight / 2 : windowWidth;
+    const carouselHeight = isRotated ? windowWidth / 2 : '100%';
 
     return (
         <View style={[styles.playerContainer, {width, backgroundColor: player.theme}]}>
@@ -67,10 +68,11 @@ export default function Temp({width, player}) {
                     transform: [{
                         rotate: spin,
                     }],
-                    width: isRotated ? windowHeight / 2 : '100%',
+                    height: carouselHeight,
+                    width: carouselWidth
                 }
             ]}>
-
+                <Stats isRotated={isRotated} playerId={player.id}/>
                 <Carousel
                     data={[
                         {
@@ -92,7 +94,6 @@ export default function Temp({width, player}) {
                     renderItem={({item: {addDmg, subtractDmg, showRecentDmg, hitPoints, style}}) => {
                         return (
                             <>
-                                <Stats isRotated={isRotated} playerId={player.id}/>
                                 <Damage
                                     style={style}
                                     player={player}
@@ -105,9 +106,8 @@ export default function Temp({width, player}) {
                             </>
                         )
                     }}
-                    vertical
-                    sliderHeight={height}
-                    itemHeight={height}
+                    sliderWidth={carouselWidth}
+                    itemWidth={carouselWidth}
                 />
             </Animated.View>
         </View>
