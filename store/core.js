@@ -25,7 +25,7 @@ function createPlayer(id) {
     return {
         id,
         life: 40,
-        cmdDmg: {
+        commanderDamage: {
 
         },
         theme: tempTheme(id)
@@ -56,66 +56,81 @@ export function getNumberOfPlayers(state) {
     return state.players.length
 }
 
-function addOne(value) {
-    return value + 1;
-}
-
-function subtractOne(value) {
-    return value - 1;
-}
-
-function updateLife(state, player, dmgFn) {
+function updatePlayer(state, player, updateValue) {
     return {
         ...state,
         players: state.players
             .reduce((result, p) => {
                 if (p.id === player.id) {
-                    return result.concat({...p, life: dmgFn(p.life)})
+                    return result.concat({...p, ...updateValue})
                 }
                 return result.concat(p);
             }, [])
     }
 }
 
-export function addDmg(state, player) {
-    return updateLife(state, player, addOne)
-}
-
-export function subtractDmg(state, player) {
-    return updateLife(state, player, subtractOne);
-}
-
-function updateCmdDmg(state, player, cmdId, dmgFn) {
+function doDamage(player) {
     return {
-        ...state,
-        players: state.players
-            .reduce((result, p) => {
-                if (p.id === player.id) {
-                    return result.concat(
-                        {
-                            ...p,
-                            cmdDmg: {
-                                ...p.cmdDmg,
-                                [cmdId]: dmgFn(p.cmdDmg[cmdId])
-                            }
-                        })
-                }
-                return result.concat(p);
-            }, [])
+        life: player.life + 1
+    };
+}
+
+function healLife(player) {
+    return {
+        life: player.life - 1
+    };
+}
+
+function getCommanderDamageForId(player, commanderId) {
+    const commanderDamage = player.commanderDamage[commanderId];
+    return commanderDamage ? commanderDamage : 0;
+}
+
+function doCommanderDamage(player, commanderId) {
+    const commanderDamage = getCommanderDamageForId(player, commanderId);
+    if (commanderDamage < 21) {
+        return {
+            commanderDamage: {
+                ...player.commanderDamage,
+                [commanderId]: commanderDamage + 1
+            }
+        }
     }
+    return {}
 }
 
-export function addCmdDmg(state, {player, cmdId}) {
-    return updateCmdDmg(state, player, cmdId, (value) => value ? value + 1 : 1)
-}
-
-export function subtractCmdDmg(state, {player, cmdId}) {
-    if (state.players.find((p) => p.id === player.id).cmdDmg[cmdId] > 0) {
-        return updateCmdDmg(state, player, cmdId, subtractOne);
+function removeCommanderDamage(player, commanderId) {
+    const commanderDamage = getCommanderDamageForId(player, commanderId);
+    if (commanderDamage > 0) {
+        return {
+            commanderDamage: {
+                ...player.commanderDamage,
+                [commanderId]: commanderDamage - 1
+            }
+        }
     }
-    return state;
+    return {};
 }
 
+export function addDamage(state, player) {
+    return updatePlayer(state, player, doDamage(player));
+}
+
+export function subtractDamage(state, player) {
+    return updatePlayer(state, player, healLife(player));
+}
+
+export function addCommanderDmg(state, {player, commanderId}) {
+    return updatePlayer(state, player, doCommanderDamage(player, commanderId))
+}
+
+export function subtractCommanderDmg(state, {player, commanderId}) {
+    return updatePlayer(state, player, removeCommanderDamage(player, commanderId))
+}
+
+export function getCommanderDamage(state, playerId) {
+    return state.players.find((p) => p.id === playerId).commanderDamage;
+}
 
 export function toggleMenu(state) {
     return {
@@ -135,7 +150,7 @@ export function resetLife(state) {
     return {
         ...state,
         players: state.players.map((player) => (
-            {...player, life: 40, cmdDmg: 0}
+            {...player, life: 40, commanderDamage: 0}
         ))
     }
 }

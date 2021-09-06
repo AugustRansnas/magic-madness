@@ -74,17 +74,17 @@ export default function Temp({width, player}) {
                 <Carousel
                     data={[
                         {
-                            addDmg: () => dispatch({type: actions.ADD_DMG, data: player}),
-                            subtractDmg: () => dispatch({type: actions.SUBTRACT_DMG, data: player}),
+                            addDmg: () => dispatch({type: actions.ADD_DAMAGE, data: player}),
+                            subtractDmg: () => dispatch({type: actions.SUBTRACT_DAMAGE, data: player}),
                             hitPoints: player.life,
                             showRecentDmg: true,
                         },
                         ...state.players.map(p => {
                             if (p.id !== player.id) {
                                 return {
-                                    addDmg: () => dispatch({type: actions.ADD_CMD_DMG, data: {player, cmdId: p.id}}),
-                                    subtractDmg: () => dispatch({type: actions.SUBTRACT_CMD_DMG, data: {player, cmdId: p.id}}),
-                                    hitPoints: player.cmdDmg[p.id],
+                                    addDmg: () => dispatch({type: actions.ADD_COMMANDER_DAMAGE, data: {player, commanderId: p.id}}),
+                                    subtractDmg: () => dispatch({type: actions.SUBTRACT_COMMANDER_DAMAGE, data: {player, commanderId: p.id}}),
+                                    hitPoints: player.commanderDamage[p.id],
                                 }
                             }
                         }).filter(v => v)
