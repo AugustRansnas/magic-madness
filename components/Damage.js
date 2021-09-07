@@ -49,7 +49,7 @@ export default function Damage({
                 <Text style={[styles.mainDmgButtonText]}>-</Text>
             </TouchableOpacity>
             <View style={[styles.lifeBox]}>
-                <Text style={[styles.lifeText, {fontSize: isRotated ? 50 : 60}]}>{hitPoints}</Text>
+                <Text style={[styles.lifeText]}>{hitPoints}</Text>
             </View>
             <TouchableOpacity style={[styles.mainDmgButton]}
                               onPress={onAddPress}>
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
         height: '100%',
     },
     lifeText: {
-        fontSize: 60,
+        fontSize: 70,
         fontWeight: 'bold'
     },
     mainDmgButtonText: {

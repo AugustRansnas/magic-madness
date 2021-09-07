@@ -6,10 +6,11 @@ import actions from "../store/actions";
 import * as core from '../store/core';
 import Damage from "./Damage";
 import Stats from "./Stats";
+import CommanderDamage from "./CommanderDamage";
 
 const rotations = {
     2: {
-        1: 0,
+        1: 180,
         2: 0
     },
     3: {
@@ -31,7 +32,7 @@ function calculateRotation(numberOfPlayers, id) {
 }
 
 function isPlayerRotated(numberOfPlayers, id) {
-    return calculateRotation(numberOfPlayers, id) !== 0;
+    return numberOfPlayers > 2 && calculateRotation(numberOfPlayers, id) !== 0;
 }
 
 export default function Temp({width, player}) {
@@ -81,30 +82,22 @@ export default function Temp({width, player}) {
                             hitPoints: player.life,
                             showRecentDmg: true,
                         },
-                        ...state.players.map(p => {
-                            if (p.id !== player.id) {
-                                return {
-                                    addDmg: () => dispatch({type: actions.ADD_COMMANDER_DAMAGE, data: {player, commanderId: p.id}}),
-                                    subtractDmg: () => dispatch({type: actions.SUBTRACT_COMMANDER_DAMAGE, data: {player, commanderId: p.id}}),
-                                    hitPoints: player.commanderDamage[p.id],
-                                }
-                            }
-                        }).filter(v => v)
+                        {
+                          index: 1
+                        }
                     ]}
-                    renderItem={({item: {addDmg, subtractDmg, showRecentDmg, hitPoints, style}}) => {
-                        return (
-                            <>
-                                <Damage
-                                    style={style}
-                                    player={player}
-                                    isRotated={isRotated}
-                                    addDmg={addDmg}
-                                    subtractDmg={subtractDmg}
-                                    hitPoints={hitPoints}
-                                    showRecentDmg={showRecentDmg}
-                                />
-                            </>
-                        )
+                    renderItem={({item: {index, addDmg, subtractDmg, showRecentDmg, hitPoints, style}}) => {
+                        return !index ? (
+                            <Damage
+                                style={style}
+                                player={player}
+                                isRotated={isRotated}
+                                addDmg={addDmg}
+                                subtractDmg={subtractDmg}
+                                hitPoints={hitPoints}
+                                showRecentDmg={showRecentDmg}
+                            />
+                        ) : (<CommanderDamage player={player}/>)
                     }}
                     sliderWidth={carouselWidth}
                     itemWidth={carouselWidth}
