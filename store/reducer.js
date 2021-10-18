@@ -20,6 +20,8 @@ export default function reducer(state, action) {
             return core.setMenuItem(state, data);
         case actions.RESET_LIFE:
             return core.resetLife(state);
+        case actions.SWITCH_THEME:
+            return core.switchTheme(state, data);
         default:
             throw new Error();
     }

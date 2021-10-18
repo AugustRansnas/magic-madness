@@ -9,8 +9,8 @@ export default function MainMenuButton() {
     const {state, dispatch} = useStore();
     const isMenuOpen = state.isMenuOpen;
     const {windowWidth, windowHeight} = core.getWindow();
-    const menuButtonHeight = 40;
-    const menuButtonWidth = 40;
+    const menuButtonHeight = 50;
+    const menuButtonWidth = 50;
 
     const calculatedPositions = useMemo(() => {
         const center = (windowHeight / 2) - (menuButtonHeight / 2);

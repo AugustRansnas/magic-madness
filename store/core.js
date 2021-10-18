@@ -4,11 +4,18 @@ import {themes} from "../components/themes";
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height
 
+const playerThemes = [
+    themes.PLAINS,
+    themes.MOUNTAIN,
+    themes.FOREST,
+    themes.ISLAND
+]
+
 export function getWindow() {
     return {windowWidth, windowHeight};
 }
 
-function tempTheme(id) {
+function getDefaultTheme(id) {
     switch (id) {
         case 1:
             return themes.PLAINS;
@@ -28,7 +35,7 @@ function createPlayer(id) {
         commanderDamage: {
 
         },
-        theme: tempTheme(id)
+        theme: getDefaultTheme(id)
     }
 }
 export function createInitialState() {
@@ -40,6 +47,10 @@ export function createInitialState() {
             createPlayer(2)
         ]
     }
+}
+
+export function isMenuOpen(state) {
+    return state.isMenuOpen;
 }
 
 export function setNumberOfPlayers(state, numOfPlayers) {
@@ -169,4 +180,13 @@ export function getSecondPlayerHalf({players}) {
         return players.slice(-2)
     }
     return players.slice(-1)
+}
+
+export function switchTheme(state, player) {
+    const playerThemeIndex = playerThemes
+        .indexOf(state.players.find((p) => p.id === player.id).theme);
+    const shouldStartOver = playerThemeIndex === playerThemes.length - 1
+    return updatePlayer(state, player, {
+        theme: shouldStartOver ? playerThemes[0] : playerThemes[playerThemeIndex + 1]
+    });
 }

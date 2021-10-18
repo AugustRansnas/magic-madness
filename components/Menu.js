@@ -56,7 +56,10 @@ export default function Menu() {
                         <TouchableOpacity
                             title=""
                             style={[styles.menuItem]}
-                            onPress={() => dispatch({type: actions.RESET_LIFE})}
+                            onPress={() => {
+                                dispatch({type: actions.RESET_LIFE})
+                                dispatch({type: actions.TOGGLE_MENU})
+                            }}
                         >
                             <ResetSvg width={svgWidth} height={svgHeight}/>
                         </TouchableOpacity>

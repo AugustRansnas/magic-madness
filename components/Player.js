@@ -35,12 +35,36 @@ function isPlayerRotated(numberOfPlayers, id) {
     return numberOfPlayers > 2 && calculateRotation(numberOfPlayers, id) !== 0;
 }
 
-export default function Temp({width, player}) {
+function getCarouselWidth(state, isRotated) {
+    const {windowWidth, windowHeight} = core.getWindow();
+    const isMenuOpen = core.isMenuOpen(state);
+    if (isRotated) {
+        if (isMenuOpen) {
+            return (windowHeight / 2) * 0.9;
+        }
+        return (windowHeight / 2);
+    }
+    return windowWidth;
+}
+
+
+function getCarouselHeight(state, isRotated) {
+    const {windowWidth, windowHeight} = core.getWindow();
+    const isMenuOpen = core.isMenuOpen(state);
+    if (isRotated) {
+        return (windowWidth / 2);
+    }
+    if (isMenuOpen) {
+        return (windowHeight / 2) * 0.9;
+    }
+    return (windowHeight / 2);
+}
+
+export default function Player({width, player}) {
     const {state, dispatch} = useStore();
     const rotation = useRef(new Animated.Value(0)).current;
     const numberOfPlayers = core.getNumberOfPlayers(state);
     const isRotated = isPlayerRotated(numberOfPlayers, player.id);
-    const {windowWidth, windowHeight} = core.getWindow();
 
     useEffect(() => {
         Animated.timing(
@@ -59,8 +83,9 @@ export default function Temp({width, player}) {
         outputRange: ['-90deg', '90deg']
     })
 
-    const carouselWidth = isRotated ? windowHeight / 2 : windowWidth;
-    const carouselHeight = isRotated ? windowWidth / 2 : '100%';
+
+    const carouselWidth = getCarouselWidth(state, isRotated);
+    const carouselHeight = getCarouselHeight(state, isRotated);
 
     return (
         <View style={[styles.playerContainer, {width, backgroundColor: player.theme}]}>
@@ -86,10 +111,9 @@ export default function Temp({width, player}) {
                           index: 1
                         }
                     ]}
-                    renderItem={({item: {index, addDmg, subtractDmg, showRecentDmg, hitPoints, style}}) => {
+                    renderItem={({item: {index, addDmg, subtractDmg, showRecentDmg, hitPoints}}) => {
                         return !index ? (
                             <Damage
-                                style={style}
                                 player={player}
                                 isRotated={isRotated}
                                 addDmg={addDmg}
