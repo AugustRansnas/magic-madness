@@ -53,6 +53,7 @@ const styles = StyleSheet.create({
     },
     commanderBox: {
         flex: 1,
+        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
@@ -63,7 +64,7 @@ const styles = StyleSheet.create({
     button: {
         flex: 1,
         width: '100%',
-        justifyContent: 'center',
+        justifyContent: 'center'
     },
     text: {
         fontSize: 50,
