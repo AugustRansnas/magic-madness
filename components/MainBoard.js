@@ -4,7 +4,6 @@ import Menu from './Menu';
 import Player from './Player';
 import {useStore} from "../store/store";
 import * as core from '../store/core';
-import MainMenuButton from "./MainMenuButton";
 
 function PlayerHalf({halfOfPlayers}) {
     const width = halfOfPlayers.length === 1 ? '100%' : '50%'
@@ -28,7 +27,6 @@ export default function MainBoard() {
     return (
         <View style={styles.container}>
             <PlayerHalf halfOfPlayers={firstHalf}/>
-            <MainMenuButton />
             <Menu/>
             <PlayerHalf halfOfPlayers={secondHalf}/>
         </View>
@@ -38,8 +36,7 @@ export default function MainBoard() {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
-        justifyContent: 'space-between'
+        backgroundColor: '#fff'
     },
     playerHalf: {
         height: '50%',

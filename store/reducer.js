@@ -14,8 +14,6 @@ export default function reducer(state, action) {
             return core.addCommanderDmg(state, data);
         case actions.SUBTRACT_COMMANDER_DAMAGE:
             return core.subtractCommanderDmg(state, data);
-        case actions.TOGGLE_MENU:
-            return core.toggleMenu(state);
         case actions.SET_MENU_ITEM:
             return core.setMenuItem(state, data);
         case actions.RESET_LIFE:

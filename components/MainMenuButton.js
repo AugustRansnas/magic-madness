@@ -1,14 +1,13 @@
-import {Animated, Dimensions, Easing, TouchableOpacity, View} from "react-native";
+import {Animated, Easing, TouchableOpacity} from "react-native";
 import Svg, {Circle} from "react-native-svg";
 import React, {useEffect, useMemo, useRef} from "react";
 import actions from '../store/actions';
 import {useStore} from "../store/store";
 import * as core from "../store/core";
 
-export default function MainMenuButton() {
-    const {state, dispatch} = useStore();
-    const isMenuOpen = state.isMenuOpen;
+export default function MainMenuButton({setIsMenuOpen, isMenuOpen}) {
     const {windowWidth, windowHeight} = core.getWindow();
+    const {dispatch} = useStore();
     const menuButtonHeight = 50;
     const menuButtonWidth = 50;
 
@@ -47,7 +46,7 @@ export default function MainMenuButton() {
         }}>
             <TouchableOpacity
                 onPress={() => {
-                    dispatch({type: actions.TOGGLE_MENU});
+                    setIsMenuOpen(!isMenuOpen);
                     dispatch({type: actions.SET_MENU_ITEM, data: null});
                 }}>
                 <Svg height={menuButtonHeight} width={menuButtonWidth} viewBox="0 0 100 100">

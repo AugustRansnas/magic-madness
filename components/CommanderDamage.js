@@ -3,11 +3,21 @@ import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useStore} from "../store/store";
 import actions from "../store/actions";
 
-export default function CommanderDamage({player}) {
+function calculatePadding(isRotated) {
+    return isRotated ? {
+        paddingHorizontal: '7.5%',
+        paddingVertical: '2.5%',
+    } : {
+        paddingHorizontal: '2.5%',
+        paddingVertical: '7.5%',
+    }
+}
+
+export default function CommanderDamage({player, isRotated}) {
     const {state, dispatch} = useStore();
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, {...calculatePadding(isRotated)}]}>
             {state.players.map((p, index) => {
                     if (p.id !== player.id) {
                         return (
@@ -40,12 +50,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-        backgroundColor: 'white'
     },
     commanderBox: {
         flex: 1,
-        borderRadius: 8,
-        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },

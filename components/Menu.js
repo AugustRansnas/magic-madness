@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {Animated, Easing, StyleSheet, TouchableOpacity, View} from 'react-native';
 import {useStore} from "../store/store";
 import actions from '../store/actions'
@@ -7,6 +7,7 @@ import ResetSvg from '../assets/reset.svg';
 import DiceSvg from '../assets/dice.svg';
 import SettingsSvg from '../assets/settings.svg';
 import SelectNumberOfPlayers from "./SelectNumberOfPlayers";
+import MainMenuButton from "./MainMenuButton";
 
 const menuItems = {
     NUMBER_OF_PLAYERS: 'NUMBER_OF_PLAYERS'
@@ -14,7 +15,7 @@ const menuItems = {
 
 export default function Menu() {
     const {state, dispatch} = useStore();
-    const isMenuOpen = state.isMenuOpen;
+    const [isMenuOpen, setIsMenuOpen] = useState(false);
     const height = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -42,7 +43,7 @@ export default function Menu() {
         const selectedMenuItem = state.selectedMenuItem;
         switch (selectedMenuItem) {
             case menuItems.NUMBER_OF_PLAYERS:
-                return <SelectNumberOfPlayers/>;
+                return <SelectNumberOfPlayers setIsMenuOpen={setIsMenuOpen}/>;
             default:
                 return (
                     <>
@@ -58,7 +59,7 @@ export default function Menu() {
                             style={[styles.menuItem]}
                             onPress={() => {
                                 dispatch({type: actions.RESET_LIFE})
-                                dispatch({type: actions.TOGGLE_MENU})
+                                setIsMenuOpen(false);
                             }}
                         >
                             <ResetSvg width={svgWidth} height={svgHeight}/>
@@ -77,16 +78,18 @@ export default function Menu() {
                         >
                             <SettingsSvg width={svgWidth} height={svgHeight}/>
                         </TouchableOpacity>
-
                     </>
                 );
         }
     }
 
     return (
-        <Animated.View style={[styles.menu, {height: animateHeight}]}>
-            {getMenuItems()}
-        </Animated.View>
+        <>
+            <MainMenuButton setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen}/>
+            <Animated.View style={[styles.menu, {height: animateHeight}]}>
+                {getMenuItems()}
+            </Animated.View>
+        </>
     )
 }
 

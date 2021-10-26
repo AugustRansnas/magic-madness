@@ -40,17 +40,12 @@ function createPlayer(id) {
 }
 export function createInitialState() {
     return {
-        isMenuOpen: false,
         selectedMenuItem: null,
         players: [
             createPlayer(1),
             createPlayer(2)
         ]
     }
-}
-
-export function isMenuOpen(state) {
-    return state.isMenuOpen;
 }
 
 export function setNumberOfPlayers(state, numOfPlayers) {
@@ -141,13 +136,6 @@ export function subtractCommanderDmg(state, {player, commanderId}) {
 
 export function getCommanderDamage(state, playerId) {
     return state.players.find((p) => p.id === playerId).commanderDamage;
-}
-
-export function toggleMenu(state) {
-    return {
-        ...state,
-        isMenuOpen: !state.isMenuOpen
-    };
 }
 
 export function setMenuItem(state, data) {

@@ -37,25 +37,16 @@ function isPlayerRotated(numberOfPlayers, id) {
 
 function getCarouselWidth(state, isRotated) {
     const {windowWidth, windowHeight} = core.getWindow();
-    const isMenuOpen = core.isMenuOpen(state);
     if (isRotated) {
-        if (isMenuOpen) {
-            return (windowHeight / 2) * 0.9;
-        }
         return (windowHeight / 2);
     }
     return windowWidth;
 }
 
-
 function getCarouselHeight(state, isRotated) {
     const {windowWidth, windowHeight} = core.getWindow();
-    const isMenuOpen = core.isMenuOpen(state);
     if (isRotated) {
         return (windowWidth / 2);
-    }
-    if (isMenuOpen) {
-        return (windowHeight / 2) * 0.9;
     }
     return (windowHeight / 2);
 }
@@ -95,7 +86,6 @@ export default function Player({width, player}) {
                         rotate: spin,
                     }],
                     height: carouselHeight,
-                    width: carouselWidth
                 }
             ]}>
                 <Stats isRotated={isRotated} playerId={player.id}/>
@@ -121,7 +111,9 @@ export default function Player({width, player}) {
                                 hitPoints={hitPoints}
                                 showRecentDmg={showRecentDmg}
                             />
-                        ) : (<CommanderDamage player={player}/>)
+                        ) : (
+                            <CommanderDamage player={player} isRotated={isRotated}/>
+                        )
                     }}
                     sliderWidth={carouselWidth}
                     itemWidth={carouselWidth}
@@ -134,9 +126,8 @@ export default function Player({width, player}) {
 
 const styles = StyleSheet.create({
     playerContainer: {
+        flex: 1,
         justifyContent: 'center',
-        borderWidth: 1,
-        alignItems: 'center',
-        borderRadius: 8
+        alignItems: 'center'
     }
 });
