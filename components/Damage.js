@@ -1,4 +1,4 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as core from "../store/core";
 
@@ -12,14 +12,24 @@ export default function Damage({
     const {windowWidth, windowHeight} = core.getWindow();
     const [recentDmg, setRecentDmg] = useState(null);
 
+    const mounted = useRef(false);
     const timer = useRef(null);
+
+    useEffect(() => {
+        mounted.current = true;
+        return () => {
+            mounted.current = false;
+        }
+    }, [])
 
     function doRecentDmg(fn) {
         clearTimeout(timer.current);
         fn()
 
         timer.current = setTimeout(function () {
-            setRecentDmg(null);
+            if (mounted.current) {
+                setRecentDmg(null);
+            }
         }, 1750)
     }
 
