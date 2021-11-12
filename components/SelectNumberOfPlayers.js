@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
 import {useStore} from "../store/store";
 import actions from '../store/actions'
+import ExoText from "./buildingblocks/ExoText";
 
 export default function SelectNumberOfPlayers({setIsMenuOpen}) {
     const {dispatch} = useStore();
@@ -15,7 +16,7 @@ export default function SelectNumberOfPlayers({setIsMenuOpen}) {
                                       dispatch({type: actions.SET_MENU_ITEM, data: null})
                                   }
                                   }>
-                    <Text style={styles.selectNumOfPlayers}>{numOfPlayers}</Text>
+                    <ExoText style={styles.selectNumOfPlayers}>{numOfPlayers}</ExoText>
                 </TouchableOpacity>)
             }
         </View>

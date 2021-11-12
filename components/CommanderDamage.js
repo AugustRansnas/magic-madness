@@ -54,7 +54,6 @@ const styles = StyleSheet.create({
     },
     commanderBox: {
         flex: 1,
-        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },

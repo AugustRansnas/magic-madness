@@ -1,9 +1,10 @@
 import React from 'react';
 import AppLoading from 'expo-app-loading';
-import { useFonts, Exo_400Regular } from '@expo-google-fonts/exo';
+import {Exo_400Regular, useFonts} from '@expo-google-fonts/exo';
 import {StatusBar} from 'expo-status-bar';
-import { StateProvider } from './store/store';
+import {StateProvider} from './store/store';
 import MainBoard from "./components/MainBoard";
+import BackgroundShader from "./components/shaders/BackgroundShader";
 
 export default function App() {
     let [fontsLoaded] = useFonts({
@@ -14,6 +15,7 @@ export default function App() {
     }
     return (
         <StateProvider>
+            <BackgroundShader/>
             <MainBoard/>
             <StatusBar style="auto"/>
         </StateProvider>

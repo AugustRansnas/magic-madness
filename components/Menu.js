@@ -97,7 +97,8 @@ const styles = StyleSheet.create({
     menu: {
         flexDirection: 'row',
         justifyContent: 'space-evenly',
-        alignItems: 'center'
+        alignItems: 'center',
+        backgroundColor: 'white'
     },
     menuItem: {
         flex: 1,

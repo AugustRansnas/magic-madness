@@ -1,7 +1,8 @@
 import React from 'react';
-import {StyleSheet, Text, View} from "react-native";
+import {StyleSheet, View} from "react-native";
 import {useStore} from "../store/store";
 import * as core from '../store/core';
+import ExoText from "./buildingblocks/ExoText";
 
 export default function Stats({isRotated, playerId}) {
     const {state} = useStore();
@@ -15,11 +16,8 @@ export default function Stats({isRotated, playerId}) {
                 {Object.values(commanderDamage)
                     .filter(v => v > 0)
                     .map((v, index) => {
-                        return <Text key={index} style={styles.statText}>{v}</Text>
+                        return <ExoText key={index} style={styles.statText}>{v}</ExoText>
                     })}
-            </View>
-            <View style={{flexDirection: 'row'}}>
-                <Text style={styles.statText}></Text>
             </View>
         </View>
     )

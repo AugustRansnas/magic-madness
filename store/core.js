@@ -1,30 +1,38 @@
-import {Dimensions} from "react-native";
-import {themes} from "../components/themes";
+import {Dimensions, PixelRatio} from "react-native";
+import {rgbaThemes} from "../components/themes";
 
 const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height
+const windowHeight = Dimensions.get('window').height;
+
+const ratio = PixelRatio.get();
+const pixelWidth = windowWidth * ratio;
+const pixelHeight = windowHeight * ratio;
 
 const playerThemes = [
-    themes.PLAINS,
-    themes.MOUNTAIN,
-    themes.FOREST,
-    themes.ISLAND
+    rgbaThemes.PLAINS,
+    rgbaThemes.MOUNTAIN,
+    rgbaThemes.FOREST,
+    rgbaThemes.ISLAND
 ]
 
 export function getWindow() {
     return {windowWidth, windowHeight};
 }
 
+export function getPixelWindow() {
+    return {pixelWidth, pixelHeight}
+}
+
 function getDefaultTheme(id) {
     switch (id) {
         case 1:
-            return themes.PLAINS;
+            return rgbaThemes.SWAMP;
         case 2:
-            return themes.MOUNTAIN;
+            return rgbaThemes.MOUNTAIN;
         case 3:
-            return themes.FOREST;
+            return rgbaThemes.FOREST;
         case 4:
-            return themes.ISLAND;
+            return rgbaThemes.ISLAND;
     }
 }
 

@@ -35,8 +35,7 @@ export default function MainBoard() {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        backgroundColor: '#fff'
+        flex: 1
     },
     playerHalf: {
         height: '50%',

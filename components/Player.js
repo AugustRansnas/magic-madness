@@ -7,6 +7,7 @@ import * as core from '../store/core';
 import Damage from "./Damage";
 import Stats from "./Stats";
 import CommanderDamage from "./CommanderDamage";
+import BackgroundShader from "./shaders/BackgroundShader";
 
 const rotations = {
     2: {
@@ -79,7 +80,7 @@ export default function Player({width, player}) {
     const carouselHeight = getCarouselHeight(state, isRotated);
 
     return (
-        <View style={[styles.playerContainer, {width, backgroundColor: player.theme}]}>
+        <View style={[styles.playerContainer, { backgroundColor: player.theme}]}>
             <Animated.View style={[
                 {
                     transform: [{
@@ -88,7 +89,6 @@ export default function Player({width, player}) {
                     height: carouselHeight,
                 }
             ]}>
-                <Stats isRotated={isRotated} playerId={player.id}/>
                 <Carousel
                     data={[
                         {
@@ -103,14 +103,17 @@ export default function Player({width, player}) {
                     ]}
                     renderItem={({item: {index, addDmg, subtractDmg, showRecentDmg, hitPoints}}) => {
                         return !index ? (
-                            <Damage
-                                player={player}
-                                isRotated={isRotated}
-                                addDmg={addDmg}
-                                subtractDmg={subtractDmg}
-                                hitPoints={hitPoints}
-                                showRecentDmg={showRecentDmg}
-                            />
+                            <>
+                                <Stats isRotated={isRotated} playerId={player.id}/>
+                                <Damage
+                                    player={player}
+                                    isRotated={isRotated}
+                                    addDmg={addDmg}
+                                    subtractDmg={subtractDmg}
+                                    hitPoints={hitPoints}
+                                    showRecentDmg={showRecentDmg}
+                                />
+                            </>
                         ) : (
                             <CommanderDamage player={player} isRotated={isRotated}/>
                         )
