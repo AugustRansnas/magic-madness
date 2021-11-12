@@ -2,6 +2,7 @@ import React from 'react';
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import {useStore} from "../store/store";
 import actions from "../store/actions";
+import ExoText from "./buildingblocks/ExoText";
 
 function calculatePadding(isRotated) {
     return isRotated ? {
@@ -26,16 +27,16 @@ export default function CommanderDamage({player, isRotated}) {
                                     type: actions.ADD_COMMANDER_DAMAGE,
                                     data: {player, commanderId: p.id}
                                 })}>
-                                    <Text style={[styles.text]}>+</Text>
+                                    <ExoText style={[styles.text]}>+</ExoText>
                                 </TouchableOpacity>
                                 <View style={[styles.counter]}>
-                                    <Text style={[styles.text]}>{player.commanderDamage[p.id] || 0}</Text>
+                                    <ExoText style={[styles.text]}>{player.commanderDamage[p.id] || 0}</ExoText>
                                 </View>
                                 <TouchableOpacity style={[styles.button]} onPress={() => dispatch({
                                     type: actions.SUBTRACT_COMMANDER_DAMAGE,
                                     data: {player, commanderId: p.id}
                                 })}>
-                                    <Text style={[styles.text]}>-</Text>
+                                    <ExoText style={[styles.text]}>-</ExoText>
                                 </TouchableOpacity>
                             </View>
                         );

@@ -1,6 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
 import * as core from "../store/core";
+import ExoText from "./buildingblocks/ExoText";
 
 export default function Damage({
                                    isRotated,
@@ -52,18 +53,18 @@ export default function Damage({
     return (
         <View style={styles.dmgContainer}>
             {showRecentDmg && <View style={[styles.recentDmg, {top: recentDmgPosition}]}>
-                <Text style={styles.recentDmgText}>{recentDmg}</Text>
+                <ExoText style={styles.recentDmgText}>{recentDmg}</ExoText>
             </View>}
             <TouchableOpacity style={[styles.mainDmgButton]}
                               onPress={onSubPress}>
-                <Text style={[styles.mainDmgButtonText]}>-</Text>
+                <ExoText style={[styles.mainDmgButtonText]}>-</ExoText>
             </TouchableOpacity>
             <View style={[styles.lifeBox]}>
-                <Text style={[styles.lifeText]}>{hitPoints}</Text>
+                <ExoText style={[styles.lifeText]}>{hitPoints}</ExoText>
             </View>
             <TouchableOpacity style={[styles.mainDmgButton]}
                               onPress={onAddPress}>
-                <Text style={[styles.mainDmgButtonText]}>+</Text>
+                <ExoText style={[styles.mainDmgButtonText]}>+</ExoText>
             </TouchableOpacity>
         </View>
     )
@@ -94,11 +95,9 @@ const styles = StyleSheet.create({
     },
     lifeText: {
         fontSize: 70,
-        fontWeight: 'bold'
     },
     mainDmgButtonText: {
         fontSize: 60,
-        fontWeight: 'bold',
         alignSelf: 'center'
     }
 });
