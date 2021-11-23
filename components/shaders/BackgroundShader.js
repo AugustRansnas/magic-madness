@@ -3,6 +3,7 @@ import {GLSL, Node, Shaders} from "gl-react";
 import {Surface} from "gl-react-expo";
 import {StyleSheet, View} from "react-native";
 import * as core from '../../store/core';
+import {useStore} from "../../store/store";
 
 const shaders = Shaders.create({
     backgroundMadness: {
@@ -65,17 +66,19 @@ void main()
 });
 
 export default function () {
+    const {state} = useStore();
+    const enabled = core.isBackgroundAnimationEnabled(state);
     const [timeElapsed, setTimeElapsed] = useState(performance.now());
     const frameId = useRef(0);
     const {pixelWidth, pixelHeight} = core.getPixelWindow();
     useEffect(() => {
         let mounted = true;
         const frame = () => {
-            if (mounted) {
-                const timeDiff = parseFloat(
-                    (((performance.now() - timeElapsed) / 10) * 0.01)
-                        .toFixed(2));
-                setTimeElapsed(timeDiff);
+            const timeDiff = parseFloat(
+                (((performance.now() - timeElapsed) / 10) * 0.01)
+                    .toFixed(2));
+            setTimeElapsed(timeDiff);
+            if (enabled && mounted) {
                 frameId.current = requestAnimationFrame(frame);
             }
         };
@@ -84,7 +87,8 @@ export default function () {
             mounted = false;
             return cancelAnimationFrame(frameId)
         };
-    }, []);
+    }, [enabled]);
+
 
     return (
         <View style={styles.container}>

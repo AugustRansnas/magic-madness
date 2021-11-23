@@ -52,7 +52,10 @@ export function createInitialState() {
         players: [
             createPlayer(1),
             createPlayer(2)
-        ]
+        ],
+        settings: {
+            backgroundAnimationEnabled: false
+        }
     }
 }
 
@@ -185,4 +188,18 @@ export function switchTheme(state, player) {
     return updatePlayer(state, player, {
         theme: shouldStartOver ? playerThemes[0] : playerThemes[playerThemeIndex + 1]
     });
+}
+
+export function isBackgroundAnimationEnabled(state) {
+    return state.settings.backgroundAnimationEnabled;
+}
+
+export function toggleBackgroundAnimation(state) {
+    return {
+        ...state,
+        settings: {
+            ...state.settings,
+            backgroundAnimationEnabled: !state.settings.backgroundAnimationEnabled
+        }
+    }
 }

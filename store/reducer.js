@@ -20,6 +20,8 @@ export default function reducer(state, action) {
             return core.resetLife(state);
         case actions.SWITCH_THEME:
             return core.switchTheme(state, data);
+        case actions.TOGGLE_BACKGROUND_ANIMATION:
+            return core.toggleBackgroundAnimation(state);
         default:
             throw new Error();
     }

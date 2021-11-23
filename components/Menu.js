@@ -5,9 +5,11 @@ import actions from '../store/actions'
 import SelectNumberOfPlayersSvg from "../assets/number-of-players.svg";
 import ResetSvg from '../assets/reset.svg';
 import DiceSvg from '../assets/dice.svg';
-import SettingsSvg from '../assets/settings.svg';
+import PipeSvg from '../assets/pipe.svg';
+import PipeNoSmokeSvg from '../assets/pipe-no-smoke.svg';
 import SelectNumberOfPlayers from "./SelectNumberOfPlayers";
 import MainMenuButton from "./MainMenuButton";
+import * as core from "../store/core";
 
 const menuItems = {
     NUMBER_OF_PLAYERS: 'NUMBER_OF_PLAYERS'
@@ -15,6 +17,7 @@ const menuItems = {
 
 export default function Menu() {
     const {state, dispatch} = useStore();
+    const pipeSmokeEnabled = core.isBackgroundAnimationEnabled(state);
     const [isMenuOpen, setIsMenuOpen] = useState(false);
     const height = useRef(new Animated.Value(0)).current;
 
@@ -37,7 +40,7 @@ export default function Menu() {
     })
 
     const svgWidth = 50;
-    const svgHeight = isMenuOpen ? 30 : 0;
+    const svgHeight = isMenuOpen ? 35 : 0;
 
     function getMenuItems() {
         const selectedMenuItem = state.selectedMenuItem;
@@ -74,9 +77,11 @@ export default function Menu() {
                         <TouchableOpacity
                             title=""
                             style={[styles.menuItem]}
-                            onPress={() => console.log('settings!')}
+                            onPress={() => dispatch({type: actions.TOGGLE_BACKGROUND_ANIMATION})}
                         >
-                            <SettingsSvg width={svgWidth} height={svgHeight}/>
+                            {pipeSmokeEnabled ?
+                                <PipeSvg width={svgWidth} height={svgHeight ? svgHeight + 15 : 0}/> :
+                                <PipeNoSmokeSvg width={svgWidth} height={svgHeight ? svgHeight + 15 : 0}/>}
                         </TouchableOpacity>
                     </>
                 );
