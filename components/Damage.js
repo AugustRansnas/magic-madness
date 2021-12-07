@@ -1,16 +1,16 @@
-import React, {useEffect, useRef, useState} from "react";
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import React, { useEffect, useRef, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import * as core from "../store/core";
 import ExoText from "./buildingblocks/ExoText";
 
 export default function Damage({
-                                   isRotated,
-                                   addDmg,
-                                   subtractDmg,
-                                   showRecentDmg,
-                                   hitPoints
-                               }) {
-    const {windowWidth, windowHeight} = core.getWindow();
+    isRotated,
+    addDmg,
+    subtractDmg,
+    showRecentDmg,
+    hitPoints
+}) {
+    const { windowWidth, windowHeight } = core.getWindow();
     const [recentDmg, setRecentDmg] = useState(null);
 
     const mounted = useRef(false);
@@ -52,20 +52,22 @@ export default function Damage({
 
     return (
         <View style={styles.dmgContainer}>
-            {showRecentDmg && <View style={[styles.recentDmg, {top: recentDmgPosition}]}>
+            {showRecentDmg && <View style={[styles.recentDmg, { top: recentDmgPosition }]}>
                 <ExoText style={styles.recentDmgText}>{recentDmg}</ExoText>
             </View>}
-            <TouchableOpacity style={[styles.mainDmgButton]}
-                              onPress={onSubPress}>
-                <ExoText style={[styles.mainDmgButtonText]}>-</ExoText>
-            </TouchableOpacity>
+            <View style={[styles.mainDmgButton]} onTouchStart={onSubPress}>
+            <TouchableOpacity style={[styles.mainDmgOpacity]}>
+                    <ExoText style={[styles.mainDmgButtonText]}>-</ExoText>
+                </TouchableOpacity>
+            </View>
             <View style={[styles.lifeBox]}>
                 <ExoText style={[styles.lifeText]}>{hitPoints}</ExoText>
             </View>
-            <TouchableOpacity style={[styles.mainDmgButton]}
-                              onPress={onAddPress}>
-                <ExoText style={[styles.mainDmgButtonText]}>+</ExoText>
-            </TouchableOpacity>
+            <View style={[styles.mainDmgButton]} onTouchStart={onAddPress}>
+                <TouchableOpacity style={[styles.mainDmgOpacity]}>
+                    <ExoText style={[styles.mainDmgButtonText]}>+</ExoText>
+                </TouchableOpacity>
+            </View>
         </View>
     )
 }
@@ -88,16 +90,17 @@ const styles = StyleSheet.create({
         zIndex: -1
     },
     mainDmgButton: {
-        flex: 1,
-        flexDirection: 'column',
-        justifyContent: 'center',
+        flex: 1
+    },
+    mainDmgOpacity: {
         height: '100%',
+        justifyContent: 'center',
+        alignItems: 'center'
     },
     lifeText: {
         fontSize: 70,
     },
     mainDmgButtonText: {
-        fontSize: 60,
-        alignSelf: 'center'
+        fontSize: 60
     }
 });
