@@ -1,10 +1,10 @@
-import { Animated, Easing, TouchableOpacity } from "react-native";
-import React, { useState, useEffect, useMemo, useRef } from "react";
+import {Animated, Easing, TouchableOpacity} from "react-native";
+import React, {useEffect, useMemo, useRef, useState} from "react";
 import actions from '../store/actions';
-import { useStore } from "../store/store";
+import {useStore} from "../store/store";
 import * as core from "../store/core";
 import MenuButtonOpenSvg from "./svg-react/MenuButtonOpenSvg";
-import Svg, { Circle, Defs, G, LinearGradient, Path, RadialGradient, Stop, SvgCss, SvgXml } from "react-native-svg";
+import MenuButtonClosedSvg from "./svg-react/MenuButtonClosedSvg";
 
 export default function MainMenuButton({ setIsMenuOpen, isMenuOpen }) {
     const { windowWidth, windowHeight } = core.getWindow();
@@ -16,7 +16,7 @@ export default function MainMenuButton({ setIsMenuOpen, isMenuOpen }) {
 
     const calculatedPositions = useMemo(() => {
         const center = (windowHeight / 2) - (menuButtonHeight / 2);
-        const offset = (windowHeight / 20)
+        const offset = (windowHeight / 15)
         return {
             left: (windowWidth / 2) - (menuButtonWidth / 2),
             top: isMenuOpen ? center - offset : center
@@ -24,11 +24,11 @@ export default function MainMenuButton({ setIsMenuOpen, isMenuOpen }) {
     }, [isMenuOpen])
 
     const topPositionAnimation = useRef(new Animated.Value(calculatedPositions.top)).current;
-    const rotation = useRef(new Animated.Value(-180)).current;
+    const rotation = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
         setShowMagicBalls(true);
-        rotation.setValue(-180);
+        rotation.setValue(isMenuOpen ? 0 : 360);
         Animated.parallel([
             Animated.timing(
                 topPositionAnimation,
@@ -42,9 +42,9 @@ export default function MainMenuButton({ setIsMenuOpen, isMenuOpen }) {
             Animated.timing(
                 rotation,
                 {
-                    toValue: -360,
-                    duration: 350,
-                    easing: Easing.linear,
+                    toValue: isMenuOpen ? 360 : 0,
+                    duration: 650,
+                    easing: Easing.elastic(0.5),
                     useNativeDriver: true
                 }
             )
@@ -77,10 +77,7 @@ export default function MainMenuButton({ setIsMenuOpen, isMenuOpen }) {
                 }}>
                 {showMagicBalls ?
                     <MenuButtonOpenSvg height={menuButtonHeight} width={menuButtonWidth} />
-                    : <Svg height={menuButtonHeight} width={menuButtonWidth} viewBox="0 0 100 100">
-                        <Circle cx="50" cy="50" r="45" stroke="black" strokeWidth="2.5" fill="green" />
-                    </Svg>}
-
+                    : <MenuButtonClosedSvg height={menuButtonHeight} width={menuButtonWidth} />}
             </TouchableOpacity>
         </Animated.View>
     )
