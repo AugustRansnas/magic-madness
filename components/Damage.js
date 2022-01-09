@@ -68,19 +68,15 @@ export default function Damage({
             {showRecentDmg && <View style={[styles.recentDmg, {top: recentDmgPosition}]}>
                 <ExoText style={styles.recentDmgText}>{recentDmg}</ExoText>
             </View>}
-            <View style={[styles.mainDmgButton]} onTouchStart={onSubPress}>
-                <TouchableOpacity style={[styles.mainDmgOpacity]}>
-                    <ExoText style={[styles.mainDmgButtonText]}>-</ExoText>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={[styles.mainDmgOpacity]} onPress={onSubPress}>
+                <ExoText style={[styles.mainDmgButtonText]}>-</ExoText>
+            </TouchableOpacity>
             <View style={[styles.lifeBox]}>
                 <ExoText style={[styles.lifeText]}>{hitPoints}</ExoText>
             </View>
-            <View style={[styles.mainDmgButton]} onTouchStart={onAddPress}>
-                <TouchableOpacity style={[styles.mainDmgOpacity]}>
-                    <ExoText style={[styles.mainDmgButtonText]}>+</ExoText>
-                </TouchableOpacity>
-            </View>
+            <TouchableOpacity style={[styles.mainDmgOpacity]} onPress={onAddPress}>
+                <ExoText style={[styles.mainDmgButtonText]}>+</ExoText>
+            </TouchableOpacity>
         </View>
     )
 }
@@ -106,6 +102,7 @@ const styles = StyleSheet.create({
         flex: 1
     },
     mainDmgOpacity: {
+        flex: 1,
         height: '100%',
         justifyContent: 'center',
         alignItems: 'center'
