@@ -7,7 +7,6 @@ import * as core from '../store/core';
 import Damage from "./Damage";
 import Stats from "./Stats";
 import CommanderDamage from "./CommanderDamage";
-import BackgroundShader from "./shaders/BackgroundShader";
 
 const rotations = {
     2: {
