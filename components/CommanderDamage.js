@@ -1,17 +1,17 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import React from "react";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {useStore} from "../store/store";
 import actions from "../store/actions";
 import ExoText from "./buildingblocks/ExoText";
 
 function calculatePadding(isRotated) {
     return isRotated ? {
-        paddingHorizontal: '7.5%',
-        paddingVertical: '2.5%',
+        paddingHorizontal: "7.5%",
+        paddingVertical: "2.5%",
     } : {
-        paddingHorizontal: '2.5%',
-        paddingVertical: '7.5%',
-    }
+        paddingHorizontal: "2.5%",
+        paddingVertical: "7.5%",
+    };
 }
 
 export default function CommanderDamage({player, isRotated}) {
@@ -44,31 +44,31 @@ export default function CommanderDamage({player, isRotated}) {
                 }
             )}
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row',
+        flexDirection: "row",
     },
     commanderBox: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center',
+        justifyContent: "center",
+        alignItems: "center",
     },
     counter: {
-        position: 'absolute',
+        position: "absolute",
         zIndex: -1
     },
     button: {
         flex: 1,
-        width: '100%',
-        justifyContent: 'center'
+        width: "100%",
+        justifyContent: "center"
     },
     text: {
         fontSize: 50,
-        alignSelf: 'center',
-        fontWeight: 'bold'
+        alignSelf: "center",
+        fontWeight: "bold"
     }
 });

@@ -43,6 +43,12 @@
         "wasm",
         "svg"
       ]
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "5ab88f70-88c9-4fcd-b505-b54221734d12"
+      }
+    },
+    "owner": "augustransnas"
   }
 }

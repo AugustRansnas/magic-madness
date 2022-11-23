@@ -6,7 +6,7 @@ export const rgbaThemes = {
     SWAMP: `rgba(21, 11, 0, ${transparency})`,
     PLAINS: `rgba(248, 231, 185, ${transparency})`,
     MOUNTAIN: `rgba(211, 32, 41, ${transparency})`
-}
+};
 
 /*
 export const themes = {

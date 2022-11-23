@@ -1,12 +1,7 @@
-import React, {useEffect, useRef} from 'react';
-import {Animated, Easing, StyleSheet, View} from 'react-native';
-import Carousel from 'react-native-snap-carousel';
-import {useStore} from '../store/store';
-import actions from "../store/actions";
-import * as core from '../store/core';
-import Damage from "./Damage";
-import Stats from "./Stats";
-import CommanderDamage from "./CommanderDamage";
+import React, {useEffect, useRef} from "react";
+import {Animated, Easing, StyleSheet, View} from "react-native";
+import {useStore} from "../store/store";
+import * as core from "../store/core";
 
 const rotations = {
     2: {
@@ -66,20 +61,20 @@ export default function Player({width, player}) {
                 easing: Easing.bounce,
                 useNativeDriver: true
             }
-        ).start()
-    }, [numberOfPlayers])
+        ).start();
+    }, [numberOfPlayers]);
 
     const spin = rotation.interpolate({
         inputRange: [-90, 90],
-        outputRange: ['-90deg', '90deg']
-    })
+        outputRange: ["-90deg", "90deg"]
+    });
 
 
     const carouselWidth = getCarouselWidth(state, isRotated);
     const carouselHeight = getCarouselHeight(state, isRotated);
 
     return (
-        <View style={[styles.playerContainer, { backgroundColor: player.theme}]}>
+        <View style={[styles.playerContainer, {backgroundColor: player.theme}]}>
             <Animated.View style={[
                 {
                     transform: [{
@@ -88,7 +83,7 @@ export default function Player({width, player}) {
                     height: carouselHeight,
                 }
             ]}>
-                <Carousel
+                {/*   <Carousel
                     data={[
                         {
                             addDmg: () => dispatch({type: actions.ADD_DAMAGE, data: player}),
@@ -119,17 +114,17 @@ export default function Player({width, player}) {
                     }}
                     sliderWidth={carouselWidth}
                     itemWidth={carouselWidth}
-                />
+                />*/}
             </Animated.View>
         </View>
-    )
+    );
 }
 
 
 const styles = StyleSheet.create({
     playerContainer: {
         flex: 1,
-        justifyContent: 'center',
-        alignItems: 'center'
+        justifyContent: "center",
+        alignItems: "center"
     }
 });

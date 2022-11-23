@@ -20,35 +20,35 @@ export default function Damage({
         mounted.current = true;
         return () => {
             mounted.current = false;
-        }
-    }, [])
+        };
+    }, []);
 
     function doRecentDmg(fn) {
         clearTimeout(timer.current);
-        fn()
+        fn();
 
         timer.current = setTimeout(function () {
             if (mounted.current) {
                 setRecentDmg(null);
             }
-        }, 1750)
+        }, 1750);
     }
 
     const onAddPress = () => {
         addDmg();
         if (showRecentDmg) {
-            doRecentDmg(() => setRecentDmg(recentDmg + 1))
+            doRecentDmg(() => setRecentDmg(recentDmg + 1));
         }
-    }
+    };
 
     const onSubPress = () => {
         subtractDmg();
         if (showRecentDmg) {
-            doRecentDmg(() => setRecentDmg(recentDmg - 1))
+            doRecentDmg(() => setRecentDmg(recentDmg - 1));
         }
-    }
+    };
 
-    const recentDmgPosition = isRotated ? (windowWidth / 14) : (windowHeight / 7)
+    const recentDmgPosition = isRotated ? (windowWidth / 14) : (windowHeight / 7);
 
     // const responder = PanResponder.create({
     //     onStartShouldSetPanResponder: () => true,
@@ -78,24 +78,24 @@ export default function Damage({
                 <ExoText style={[styles.mainDmgButtonText]}>+</ExoText>
             </TouchableOpacity>
         </View>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     dmgContainer: {
         flex: 1,
-        flexDirection: 'row',
-        justifyContent: 'center',
-        alignItems: 'center'
+        flexDirection: "row",
+        justifyContent: "center",
+        alignItems: "center"
     },
     recentDmg: {
-        position: 'absolute'
+        position: "absolute"
     },
     recentDmgText: {
         fontSize: 30
     },
     lifeBox: {
-        position: 'absolute',
+        position: "absolute",
         zIndex: -1
     },
     mainDmgButton: {
@@ -103,9 +103,9 @@ const styles = StyleSheet.create({
     },
     mainDmgOpacity: {
         flex: 1,
-        height: '100%',
-        justifyContent: 'center',
-        alignItems: 'center'
+        height: "100%",
+        justifyContent: "center",
+        alignItems: "center"
     },
     lifeText: {
         fontSize: 70,

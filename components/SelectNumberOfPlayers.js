@@ -1,7 +1,7 @@
-import React from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React from "react";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import {useStore} from "../store/store";
-import actions from '../store/actions'
+import actions from "../store/actions";
 import ExoText from "./buildingblocks/ExoText";
 
 export default function SelectNumberOfPlayers({setIsMenuOpen}) {
@@ -12,8 +12,8 @@ export default function SelectNumberOfPlayers({setIsMenuOpen}) {
                 <TouchableOpacity key={numOfPlayers}
                                   onPress={() => {
                                       setIsMenuOpen(false);
-                                      dispatch({type: actions.SET_NUMBER_OF_PLAYERS, data: numOfPlayers})
-                                      dispatch({type: actions.SET_MENU_ITEM, data: null})
+                                      dispatch({type: actions.SET_NUMBER_OF_PLAYERS, data: numOfPlayers});
+                                      dispatch({type: actions.SET_MENU_ITEM, data: null});
                                   }
                                   }>
                     <ExoText style={styles.selectNumOfPlayers}>{numOfPlayers}</ExoText>
@@ -25,13 +25,13 @@ export default function SelectNumberOfPlayers({setIsMenuOpen}) {
 
 const styles = StyleSheet.create({
     numOfPlayers: {
-        flexDirection: 'row',
+        flexDirection: "row",
         flex: 1,
-        justifyContent: 'space-evenly',
+        justifyContent: "space-evenly",
     },
     selectNumOfPlayers: {
         padding: 10,
         fontSize: 50,
-        fontWeight: 'bold',
+        fontWeight: "bold",
     }
 });

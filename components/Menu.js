@@ -1,19 +1,19 @@
-import React, {useEffect, useRef, useState} from 'react';
-import {Animated, Easing, StyleSheet, TouchableOpacity, View} from 'react-native';
+import React, {useEffect, useRef, useState} from "react";
+import {Animated, Easing, StyleSheet, TouchableOpacity} from "react-native";
 import {useStore} from "../store/store";
-import actions from '../store/actions'
+import actions from "../store/actions";
 import SelectNumberOfPlayersSvg from "../assets/number-of-players.svg";
-import ResetSvg from '../assets/reset.svg';
-import DiceSvg from '../assets/dice.svg';
-import PipeSvg from '../assets/pipe.svg';
-import PipeNoSmokeSvg from '../assets/pipe-no-smoke.svg';
+import ResetSvg from "../assets/reset.svg";
+import DiceSvg from "../assets/dice.svg";
+import PipeSvg from "../assets/pipe.svg";
+import PipeNoSmokeSvg from "../assets/pipe-no-smoke.svg";
 import SelectNumberOfPlayers from "./SelectNumberOfPlayers";
 import MainMenuButton from "./MainMenuButton";
 import * as core from "../store/core";
 
 const menuItems = {
-    NUMBER_OF_PLAYERS: 'NUMBER_OF_PLAYERS'
-}
+    NUMBER_OF_PLAYERS: "NUMBER_OF_PLAYERS"
+};
 
 export default function Menu() {
     const {state, dispatch} = useStore();
@@ -31,13 +31,13 @@ export default function Menu() {
                 useNativeDriver: false
             }
         ).start();
-    }, [isMenuOpen])
+    }, [isMenuOpen]);
 
 
     const animateHeight = height.interpolate({
         inputRange: [0, 10],
-        outputRange: ['0%', '10%']
-    })
+        outputRange: ["0%", "10%"]
+    });
 
     const svgWidth = 50;
     const svgHeight = isMenuOpen ? 35 : 0;
@@ -61,7 +61,7 @@ export default function Menu() {
                             title=""
                             style={[styles.menuItem]}
                             onPress={() => {
-                                dispatch({type: actions.RESET_LIFE})
+                                dispatch({type: actions.RESET_LIFE});
                                 setIsMenuOpen(false);
                             }}
                         >
@@ -70,7 +70,7 @@ export default function Menu() {
                         <TouchableOpacity
                             title=""
                             style={[styles.menuItem]}
-                            onPress={() => console.log('roll the dice!')}
+                            onPress={() => console.log("roll the dice!")}
                         >
                             <DiceSvg width={svgWidth} height={svgHeight}/>
                         </TouchableOpacity>
@@ -95,21 +95,21 @@ export default function Menu() {
                 {getMenuItems()}
             </Animated.View>
         </>
-    )
+    );
 }
 
 const styles = StyleSheet.create({
     menu: {
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-        backgroundColor: 'white'
+        flexDirection: "row",
+        justifyContent: "space-evenly",
+        alignItems: "center",
+        backgroundColor: "white"
     },
     menuItem: {
         flex: 1,
-        height: '100%',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center'
+        height: "100%",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignItems: "center"
     }
-})
+});
