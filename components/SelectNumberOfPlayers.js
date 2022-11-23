@@ -11,7 +11,7 @@ export default function SelectNumberOfPlayers({setIsMenuOpen}) {
             {[2, 3, 4].map((numOfPlayers) =>
                 <TouchableOpacity key={numOfPlayers}
                                   onPress={() => {
-                                      setIsMenuOpen(false);
+                                      dispatch({type: actions.SET_MENU_OPEN, data: false})
                                       dispatch({type: actions.SET_NUMBER_OF_PLAYERS, data: numOfPlayers});
                                       dispatch({type: actions.SET_MENU_ITEM, data: null});
                                   }

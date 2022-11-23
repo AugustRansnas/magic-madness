@@ -6,9 +6,10 @@ import * as core from "../store/core";
 import MenuButtonOpenSvg from "./svg-react/MenuButtonOpenSvg";
 import MenuButtonClosedSvg from "./svg-react/MenuButtonClosedSvg";
 
-export default function MainMenuButton({setIsMenuOpen, isMenuOpen}) {
+export default function MainMenuButton() {
     const {windowWidth, windowHeight} = core.getWindow();
-    const {dispatch} = useStore();
+    const {state, dispatch} = useStore();
+    const isMenuOpen = state.menuOpen;
     const [showMagicBalls, setShowMagicBalls] = useState(false);
 
     const menuButtonHeight = 60;
@@ -72,7 +73,7 @@ export default function MainMenuButton({setIsMenuOpen, isMenuOpen}) {
         }}>
             <TouchableOpacity
                 onPress={() => {
-                    setIsMenuOpen(!isMenuOpen);
+                    dispatch({type: actions.SET_MENU_OPEN, data: !state.menuOpen})
                     dispatch({type: actions.SET_MENU_ITEM, data: null});
                 }}>
                 {showMagicBalls ?

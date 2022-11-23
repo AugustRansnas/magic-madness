@@ -16,6 +16,8 @@ export default function reducer(state, action) {
             return core.subtractCommanderDmg(state, data);
         case actions.SET_MENU_ITEM:
             return core.setMenuItem(state, data);
+        case actions.SET_MENU_OPEN:
+            return core.setMenuOpen(state, data);
         case actions.RESET_LIFE:
             return core.resetLife(state);
         case actions.SWITCH_THEME:

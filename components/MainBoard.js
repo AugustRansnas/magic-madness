@@ -6,12 +6,10 @@ import {useStore} from "../store/store";
 import * as core from "../store/core";
 
 function PlayerHalf({halfOfPlayers}) {
-    const width = halfOfPlayers.length === 1 ? "100%" : "50%";
     return (
         <View style={styles.playerHalf}>
             {halfOfPlayers.map((player) =>
                 <Player key={player.id}
-                        width={width}
                         player={player}/>
             )}
         </View>

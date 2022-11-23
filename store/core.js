@@ -156,6 +156,13 @@ export function setMenuItem(state, data) {
     }
 }
 
+export function setMenuOpen(state, data) {
+    return {
+        ...state,
+        menuOpen: data
+    }
+}
+
 export function resetLife(state) {
     return {
         ...state,

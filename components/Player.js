@@ -2,6 +2,9 @@ import React, {useEffect, useRef} from "react";
 import {Animated, Easing, StyleSheet, View} from "react-native";
 import {useStore} from "../store/store";
 import * as core from "../store/core";
+import Stats from "./Stats";
+import Damage from "./Damage";
+import actions from "../store/actions";
 
 const rotations = {
     2: {
@@ -33,6 +36,9 @@ function isPlayerRotated(numberOfPlayers, id) {
 function getCarouselWidth(state, isRotated) {
     const {windowWidth, windowHeight} = core.getWindow();
     if (isRotated) {
+        if (state.menuOpen) {
+            return (windowHeight / 2) * 0.90;
+        }
         return (windowHeight / 2);
     }
     return windowWidth;
@@ -43,10 +49,14 @@ function getCarouselHeight(state, isRotated) {
     if (isRotated) {
         return (windowWidth / 2);
     }
+
+    if (state.menuOpen) {
+        return (windowHeight / 2) * 0.9;
+    }
     return (windowHeight / 2);
 }
 
-export default function Player({width, player}) {
+export default function Player({ player}) {
     const {state, dispatch} = useStore();
     const rotation = useRef(new Animated.Value(0)).current;
     const numberOfPlayers = core.getNumberOfPlayers(state);
@@ -81,8 +91,20 @@ export default function Player({width, player}) {
                         rotate: spin,
                     }],
                     height: carouselHeight,
+                    width: carouselWidth
                 }
             ]}>
+                <>
+                    <Stats isRotated={isRotated} playerId={player.id}/>
+                    <Damage
+                        player={player}
+                        isRotated={isRotated}
+                        addDmg={() => dispatch({type: actions.ADD_DAMAGE, data: player})}
+                        subtractDmg={() => dispatch({type: actions.SUBTRACT_DAMAGE, data: player})}
+                        hitPoints={player.life}
+                        showRecentDmg={true}
+                    />
+                </>
                 {/*   <Carousel
                     data={[
                         {

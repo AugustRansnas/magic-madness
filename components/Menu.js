@@ -1,4 +1,4 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useEffect, useRef} from "react";
 import {Animated, Easing, StyleSheet, TouchableOpacity} from "react-native";
 import {useStore} from "../store/store";
 import actions from "../store/actions";
@@ -18,7 +18,7 @@ const menuItems = {
 export default function Menu() {
     const {state, dispatch} = useStore();
     const pipeSmokeEnabled = core.isBackgroundAnimationEnabled(state);
-    const [isMenuOpen, setIsMenuOpen] = useState(false);
+    const isMenuOpen = state.menuOpen;
     const height = useRef(new Animated.Value(0)).current;
 
     useEffect(() => {
@@ -46,7 +46,7 @@ export default function Menu() {
         const selectedMenuItem = state.selectedMenuItem;
         switch (selectedMenuItem) {
             case menuItems.NUMBER_OF_PLAYERS:
-                return <SelectNumberOfPlayers setIsMenuOpen={setIsMenuOpen}/>;
+                return <SelectNumberOfPlayers/>;
             default:
                 return (
                     <>
@@ -62,7 +62,7 @@ export default function Menu() {
                             style={[styles.menuItem]}
                             onPress={() => {
                                 dispatch({type: actions.RESET_LIFE});
-                                setIsMenuOpen(false);
+                                dispatch({type: actions.SET_MENU_OPEN, data: false})
                             }}
                         >
                             <ResetSvg width={svgWidth} height={svgHeight}/>
@@ -90,7 +90,7 @@ export default function Menu() {
 
     return (
         <>
-            <MainMenuButton setIsMenuOpen={setIsMenuOpen} isMenuOpen={isMenuOpen}/>
+            <MainMenuButton/>
             <Animated.View style={[styles.menu, {height: animateHeight}]}>
                 {getMenuItems()}
             </Animated.View>
