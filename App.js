@@ -1,10 +1,10 @@
 import React, {useCallback} from "react";
 import * as SplashScreen from "expo-splash-screen";
 import {Exo_400Regular, useFonts} from "@expo-google-fonts/exo";
-import {StatusBar} from "expo-status-bar";
+import {StatusBar, StyleSheet, View} from "react-native";
+import BackgroundShader from "./components/background/BackgroundShader";
 import {StateProvider} from "./store/store";
 import MainBoard from "./components/MainBoard";
-import {View, StyleSheet} from "react-native";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -23,7 +23,9 @@ export default function App() {
     }
 
     return (
+
         <View style={styles.container} onLayout={onLayoutRootView}>
+            <BackgroundShader/>
             <StateProvider>
                 <MainBoard/>
                 <StatusBar style="auto"/>

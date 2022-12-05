@@ -1,4 +1,4 @@
-const transparency = 1;
+const transparency = 0.6;
 
 export const rgbaThemes = {
     FOREST: `rgba(0, 115, 61, ${transparency})`,
