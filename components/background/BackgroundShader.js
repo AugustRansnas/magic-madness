@@ -48,8 +48,8 @@ const AugustShaderMaterial = shaderMaterial(
         vec2 uv = gl_FragCoord.xy / uResolution.xy;
         vec2 uv_square = vec2(uv.x * uResolution.x / uResolution.y, uv.y);
         float dist_center = pow(2.0*length(uv - 0.5), 2.0);
-        float foaminess = smoothstep(0.4, 1.8, dist_center);
-        float clearness = 0.1 + 0.9*smoothstep(0.1, 0.5, dist_center);
+        float foaminess = smoothstep(0.4, 4.8, dist_center);
+        float clearness = 1.0;
         
         vec2 p = mod(uv_square*TAU*TILING_FACTOR, TAU)-250.0;
         float c = waterHighlight(p, time, foaminess);
