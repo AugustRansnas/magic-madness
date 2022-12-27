@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
-import * as core from "../store/core";
-import ExoText from "./buildingblocks/ExoText";
+import * as core from "../../store/core";
+import ExoText from "../buildingblocks/ExoText";
 
 export default function Damage({
                                    isRotated,

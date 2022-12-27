@@ -1,7 +1,7 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import Menu from "./Menu";
-import Player from "./Player";
+import Menu from "./menu/Menu";
+import Player from "./player/Player";
 import {useStore} from "../store/store";
 import * as core from "../store/core";
 

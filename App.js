@@ -2,7 +2,7 @@ import React, {useCallback} from "react";
 import * as SplashScreen from "expo-splash-screen";
 import {Exo_400Regular, useFonts} from "@expo-google-fonts/exo";
 import {StatusBar, StyleSheet, View} from "react-native";
-import BackgroundShader from "./components/background/BackgroundShader";
+import BackgroundShader from "./components/shaders/BackgroundShader";
 import {StateProvider} from "./store/store";
 import MainBoard from "./components/MainBoard";
 

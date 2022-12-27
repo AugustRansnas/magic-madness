@@ -1,8 +1,8 @@
 import React from "react";
 import {StyleSheet, View} from "react-native";
-import {useStore} from "../store/store";
-import * as core from "../store/core";
-import ExoText from "./buildingblocks/ExoText";
+import {useStore} from "../../store/store";
+import * as core from "../../store/core";
+import ExoText from "../buildingblocks/ExoText";
 
 export default function Stats({isRotated, playerId}) {
     const {state} = useStore();

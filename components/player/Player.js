@@ -1,10 +1,10 @@
 import React, {useEffect, useRef} from "react";
 import {Animated, Easing, StyleSheet, View} from "react-native";
-import {useStore} from "../store/store";
-import * as core from "../store/core";
+import {useStore} from "../../store/store";
+import * as core from "../../store/core";
 import Stats from "./Stats";
 import Damage from "./Damage";
-import actions from "../store/actions";
+import actions from "../../store/actions";
 
 const rotations = {
     2: {

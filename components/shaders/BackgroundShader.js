@@ -5,7 +5,7 @@ import {shaderMaterial} from "@react-three/drei/native";
 import {StyleSheet, View} from "react-native";
 import * as core from "../../store/core";
 
-const AugustShaderMaterial = shaderMaterial(
+const TheShader = shaderMaterial(
     // Uniform
     {
         uTime: 0.,
@@ -64,25 +64,25 @@ const AugustShaderMaterial = shaderMaterial(
   `
 );
 
-extend({AugustShaderMaterial});
+extend({TheShader});
 
 
-const ShaderBackground = () => {
+function Mesh() {
     const mesh = useRef();
     useFrame(({clock}) => {
-        mesh.current.material.uniforms.uTime.value= clock.getElapsedTime()
+        mesh.current.material.uniforms.uTime.value = clock.getElapsedTime();
     });
-    const { size } = useThree()
-    const {pixelWidth, pixelHeight} = core.getPixelWindow()
+    const {size} = useThree();
+    const {pixelWidth, pixelHeight} = core.getPixelWindow();
 
 
     return (
         <mesh ref={mesh}>
             <planeGeometry args={[size.width, size.height]} />
-            <augustShaderMaterial uResolution={[pixelWidth, pixelHeight, 0]}/>
+            <theShader uResolution={[pixelWidth, pixelHeight, 0]}/>
         </mesh>
     );
-};
+}
 
 
 export default function BackgroundShader() {
@@ -90,7 +90,7 @@ export default function BackgroundShader() {
         <View style={styles.container}>
             <Canvas>
                 <Suspense fallback={null}>
-                    <ShaderBackground/>
+                    <Mesh/>
                 </Suspense>
             </Canvas>
         </View>

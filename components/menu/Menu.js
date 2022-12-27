@@ -1,15 +1,15 @@
 import React, {useEffect, useRef} from "react";
 import {Animated, Easing, StyleSheet, TouchableOpacity} from "react-native";
-import {useStore} from "../store/store";
-import actions from "../store/actions";
-import SelectNumberOfPlayersSvg from "../assets/number-of-players.svg";
-import ResetSvg from "../assets/reset.svg";
-import DiceSvg from "../assets/dice.svg";
-import PipeSvg from "../assets/pipe.svg";
-import PipeNoSmokeSvg from "../assets/pipe-no-smoke.svg";
+import {useStore} from "../../store/store";
+import actions from "../../store/actions";
+import SelectNumberOfPlayersSvg from "../../assets/number-of-players.svg";
+import ResetSvg from "../../assets/reset.svg";
+import DiceSvg from "../../assets/dice.svg";
+import PipeSvg from "../../assets/pipe.svg";
+import PipeNoSmokeSvg from "../../assets/pipe-no-smoke.svg";
 import SelectNumberOfPlayers from "./SelectNumberOfPlayers";
 import MainMenuButton from "./MainMenuButton";
-import * as core from "../store/core";
+import * as core from "../../store/core";
 
 const menuItems = {
     NUMBER_OF_PLAYERS: "NUMBER_OF_PLAYERS"

@@ -1,10 +1,10 @@
 import {Animated, Easing, TouchableOpacity} from "react-native";
 import React, {useEffect, useMemo, useRef, useState} from "react";
-import actions from "../store/actions";
-import {useStore} from "../store/store";
-import * as core from "../store/core";
-import MenuButtonOpenSvg from "./svg-react/MenuButtonOpenSvg";
-import MenuButtonClosedSvg from "./svg-react/MenuButtonClosedSvg";
+import actions from "../../store/actions";
+import {useStore} from "../../store/store";
+import * as core from "../../store/core";
+import MenuButtonOpenSvg from "../svg-react/MenuButtonOpenSvg";
+import MenuButtonClosedSvg from "../svg-react/MenuButtonClosedSvg";
 
 export default function MainMenuButton() {
     const {windowWidth, windowHeight} = core.getWindow();

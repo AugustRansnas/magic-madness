@@ -1,5 +1,5 @@
 import {Dimensions, PixelRatio} from "react-native";
-import {rgbaThemes} from "../components/themes";
+import {rgbaThemes} from "../constants/themes";
 
 const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
