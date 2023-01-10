@@ -3,6 +3,16 @@ import {StyleSheet, TouchableOpacity, View} from "react-native";
 import * as core from "../../store/core";
 import ExoText from "../buildingblocks/ExoText";
 
+function DamageHitBox({onPress, text}) {
+    return (
+        <TouchableOpacity
+            onPress={onPress}
+             style={[styles.mainDmgOpacity]}>
+            <ExoText style={[styles.mainDmgButtonText]}>{text}</ExoText>
+        </TouchableOpacity>
+    );
+}
+
 export default function Damage({
                                    isRotated,
                                    addDmg,
@@ -50,33 +60,17 @@ export default function Damage({
 
     const recentDmgPosition = isRotated ? (windowWidth / 14) : (windowHeight / 7);
 
-    // const responder = PanResponder.create({
-    //     onStartShouldSetPanResponder: () => true,
-    //     onMoveShouldSetPanResponder: () => true,
-    //
-    //     onPanResponderRelease: (event, gestureState) => {
-    //         console.log(gestureState);
-    //         if (gestureState.vx === 0) {
-    //             onAddPress();
-    //         }
-    //         console.log('Touch has ended !');
-    //     }
-    // });
 
     return (
         <View style={styles.dmgContainer}>
             {showRecentDmg && <View style={[styles.recentDmg, {top: recentDmgPosition}]}>
                 <ExoText style={[styles.recentDmgText]}>{recentDmg}</ExoText>
             </View>}
-            <TouchableOpacity style={[styles.mainDmgOpacity]} onPress={onSubPress}>
-                <ExoText style={[styles.mainDmgButtonText]}>-</ExoText>
-            </TouchableOpacity>
+            <DamageHitBox style={[styles.mainDmgOpacity]} onPress={onSubPress} text="-"/>
             <View style={[styles.lifeBox]}>
                 <ExoText style={[styles.lifeText]}>{hitPoints}</ExoText>
             </View>
-            <TouchableOpacity style={[styles.mainDmgOpacity]} onPress={onAddPress}>
-                <ExoText style={[styles.mainDmgButtonText]}>+</ExoText>
-            </TouchableOpacity>
+            <DamageHitBox onPress={onAddPress} text="+"/>
         </View>
     );
 }
@@ -86,7 +80,7 @@ const styles = StyleSheet.create({
         flex: 1,
         flexDirection: "row",
         justifyContent: "center",
-        alignItems: "center"
+        alignItems: "center",
     },
     recentDmg: {
         position: "absolute"
@@ -98,9 +92,6 @@ const styles = StyleSheet.create({
         position: "absolute",
         zIndex: -1
     },
-    mainDmgButton: {
-        flex: 1
-    },
     mainDmgOpacity: {
         flex: 1,
         height: "100%",
@@ -108,7 +99,7 @@ const styles = StyleSheet.create({
         alignItems: "center"
     },
     lifeText: {
-        fontSize: 70,
+        fontSize: 60,
     },
     mainDmgButtonText: {
         fontSize: 60
