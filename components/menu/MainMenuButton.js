@@ -1,4 +1,4 @@
-import {Animated, Easing, TouchableOpacity} from "react-native";
+import {Animated, Easing, Image, TouchableOpacity} from "react-native";
 import React, {useEffect, useMemo, useRef, useState} from "react";
 import actions from "../../store/actions";
 import {useStore} from "../../store/store";
@@ -12,8 +12,8 @@ export default function MainMenuButton() {
     const isMenuOpen = state.menuOpen;
     const [showMagicBalls, setShowMagicBalls] = useState(false);
 
-    const menuButtonHeight = 60;
-    const menuButtonWidth = 60;
+    const menuButtonHeight = 90;
+    const menuButtonWidth = 90;
 
     const calculatedPositions = useMemo(() => {
         const center = (windowHeight / 2) - (menuButtonHeight / 2);
@@ -71,6 +71,13 @@ export default function MainMenuButton() {
             }],
             zIndex: 1000
         }}>
+            <TouchableOpacity  onPress={() => {
+                dispatch({type: actions.SET_MENU_OPEN, data: !state.menuOpen})
+                dispatch({type: actions.SET_MENU_ITEM, data: null});
+            }}>
+                <Image source={require('../../assets/test-menu-button-3.png')} style={{ width: menuButtonWidth, height: menuButtonHeight }} />
+            </TouchableOpacity>
+{/*
             <TouchableOpacity
                 onPress={() => {
                     dispatch({type: actions.SET_MENU_OPEN, data: !state.menuOpen})
@@ -80,6 +87,7 @@ export default function MainMenuButton() {
                     <MenuButtonOpenSvg height={menuButtonHeight} width={menuButtonWidth}/>
                     : <MenuButtonClosedSvg height={menuButtonHeight} width={menuButtonWidth}/>}
             </TouchableOpacity>
+*/}
         </Animated.View>
     );
 }
