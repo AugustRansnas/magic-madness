@@ -81,6 +81,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "center",
         alignItems: "center",
+        border: "1px solid black",
     },
     recentDmg: {
         position: "absolute"

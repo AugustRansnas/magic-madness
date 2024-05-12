@@ -1,16 +1,25 @@
 import React, {useState} from "react";
-import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableHighlight} from "react-native";
+import {
+    Alert,
+    Modal,
+    StyleSheet,
+    Text,
+    Pressable,
+    View,
+    TouchableWithoutFeedback,
+} from "react-native";
 import ExoText from "../../buildingblocks/ExoText";
 import * as core from "../../../store/core";
 import DamageHitBox from "../DamageHitBox";
 import CommanderDamage from "./CommanderDamage";
 
-
 export default function PlayerModal({player, playerHeight, playerWidth, rotation}) {
     const [playerModalVisible, setPlayerModalVisible] = useState(false);
+    const {windowWidth, windowHeight} = core.getWindow();
     const isSideWays = rotation === 90 || rotation === -90;
-    const modalHeight = isSideWays ? playerHeight * 2 - 20 : playerHeight - 20
-    const modalWidth = isSideWays ? playerWidth : playerWidth - 20
+    const modalHeight = isSideWays ? windowWidth - 20 : windowHeight - 300;
+    const modalWidth = isSideWays ? windowHeight - 300 : windowWidth - 20;
+
     return (
         <>
             <Modal
@@ -21,31 +30,29 @@ export default function PlayerModal({player, playerHeight, playerWidth, rotation
                     setPlayerModalVisible(!playerModalVisible);
                 }}
             >
-                <View style={[styles.centeredView, {
-                    transform: [{
-                        rotate: `${rotation}deg`,
-                    }]
-                }]}>
-                    <View style={[styles.modalView, {height: modalHeight, width: modalWidth}]}>
-                        <Text style={styles.modalText}>Hello World!</Text>
-                        <Pressable
-                            style={[styles.button, styles.buttonClose]}
-                            onPress={() => setPlayerModalVisible(!playerModalVisible)}
-                        >
-                            <Text style={styles.textStyle}>Hide Modal</Text>
-                        </Pressable>
-                        <CommanderDamage player={player}/>
+                <TouchableWithoutFeedback onPress={() => setPlayerModalVisible(false)}>
+                    <View style={styles.centeredView}>
+                        <TouchableWithoutFeedback onPress={() => {
+                        }}>
+                            <View style={[styles.modalView, {
+                                transform: [{
+                                    rotate: `${rotation}deg`
+                                }],
+                                height: modalHeight, width: modalWidth
+                            }]}>
+                                <Text style={styles.modalText}>Hello World!</Text>
+                                <CommanderDamage player={player}/>
+                            </View>
+                        </TouchableWithoutFeedback>
                     </View>
-                </View>
+                </TouchableWithoutFeedback>
             </Modal>
 
             <Pressable
-                style={[styles.playerModalButton, {top: (playerHeight / 4) * 3 - 10}]}
+                style={[styles.playerModalButton, {top: (playerHeight / 2) - 40}]}
                 onPress={() => setPlayerModalVisible(true)}
             >
-                <ExoText style={[{fontSize: 20}]}>Style me</ExoText>
             </Pressable>
-
         </>
     );
 };
@@ -55,6 +62,7 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
+        backgroundColor: "rgba(0,0,0,0.4)"  // Semi-transparent background
     },
     modalView: {
         padding: 30,
@@ -74,17 +82,15 @@ const styles = StyleSheet.create({
         position: "absolute",
         alignSelf: "center",
         borderRadius: 20,
-        padding: 10,
+        padding: 40,
         elevation: 2,
-        backgroundColor: "#F194FF"
+        backgroundColor: "rgba(255, 255, 255, 0)"
+        //backgroundColor: "black"
     },
     button: {
         borderRadius: 20,
         padding: 10,
         elevation: 2
-    },
-    buttonOpen: {
-        backgroundColor: "#F194FF",
     },
     buttonClose: {
         backgroundColor: "#2196F3",
