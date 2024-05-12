@@ -93,6 +93,7 @@ export default function Player({player}) {
                     showRecentDmg={true}
                 />
                 <PlayerModal
+                    player={player}
                     playerHeight={playerHeight}
                     playerWidth={playerWidth}
                     rotation={calculatedRotation}/>

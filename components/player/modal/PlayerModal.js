@@ -1,10 +1,12 @@
 import React, {useState} from "react";
-import {Alert, Modal, StyleSheet, Text, Pressable, View} from "react-native";
+import {Alert, Modal, StyleSheet, Text, Pressable, View, TouchableHighlight} from "react-native";
 import ExoText from "../../buildingblocks/ExoText";
 import * as core from "../../../store/core";
+import DamageHitBox from "../DamageHitBox";
+import CommanderDamage from "./CommanderDamage";
 
 
-export default function PlayerModal({playerHeight, playerWidth, rotation}) {
+export default function PlayerModal({player, playerHeight, playerWidth, rotation}) {
     const [playerModalVisible, setPlayerModalVisible] = useState(false);
     const isSideWays = rotation === 90 || rotation === -90;
     const modalHeight = isSideWays ? playerHeight * 2 - 20 : playerHeight - 20
@@ -16,7 +18,6 @@ export default function PlayerModal({playerHeight, playerWidth, rotation}) {
                 transparent={true}
                 visible={playerModalVisible}
                 onRequestClose={() => {
-                    Alert.alert("PlayerModal has been closed.");
                     setPlayerModalVisible(!playerModalVisible);
                 }}
             >
@@ -24,7 +25,7 @@ export default function PlayerModal({playerHeight, playerWidth, rotation}) {
                     transform: [{
                         rotate: `${rotation}deg`,
                     }]
-                }]} onTouchStart={() => setPlayerModalVisible(false)}>
+                }]}>
                     <View style={[styles.modalView, {height: modalHeight, width: modalWidth}]}>
                         <Text style={styles.modalText}>Hello World!</Text>
                         <Pressable
@@ -33,6 +34,7 @@ export default function PlayerModal({playerHeight, playerWidth, rotation}) {
                         >
                             <Text style={styles.textStyle}>Hide Modal</Text>
                         </Pressable>
+                        <CommanderDamage player={player}/>
                     </View>
                 </View>
             </Modal>
