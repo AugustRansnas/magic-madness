@@ -87,8 +87,8 @@ export default function Player({player}) {
                 <Damage
                     player={player}
                     isRotated={isRotated}
-                    addDmg={() => dispatch({type: actions.ADD_DAMAGE, data: player})}
-                    subtractDmg={() => dispatch({type: actions.SUBTRACT_DAMAGE, data: player})}
+                    addDmg={(dmgValue) => dispatch({type: actions.ADD_DAMAGE, data: {player, dmgValue}})}
+                    subtractDmg={(dmgValue) => dispatch({type: actions.SUBTRACT_DAMAGE, data: {player, dmgValue }})}
                     hitPoints={player.life}
                     showRecentDmg={true}
                 />

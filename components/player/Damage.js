@@ -1,13 +1,45 @@
-import React, {useEffect, useRef, useState} from "react";
+import React, {useCallback, useEffect, useRef, useState} from "react";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import * as core from "../../store/core";
 import ExoText from "../buildingblocks/ExoText";
 
-function DamageHitBox({onPress, text}) {
+
+function DamageHitBox({onPress, onLongPress, text}) {
+    const onLongPressTimer = useRef(null);
+    const pressTimer = useRef(null);
+    const longPressTriggered = useRef(false);
+    const latestOnLongPress = useRef(onLongPress);
+
+    useEffect(() => {
+        latestOnLongPress.current = onLongPress;
+    }, [onLongPress]);
+
+
+    const onLongPressAction = useCallback(() => {
+        latestOnLongPress.current();
+        onLongPressTimer.current = setInterval(() => {
+            latestOnLongPress.current();
+        }, 500);
+    }, [onLongPress]);
+
+    const handlePressOut = () => {
+        clearTimeout(pressTimer.current);
+        clearInterval(onLongPressTimer.current);
+        longPressTriggered.current = false;
+    };
+
     return (
         <TouchableOpacity
-            onPress={onPress}
-             style={[styles.mainDmgOpacity]}>
+            onPress={() => {
+                pressTimer.current = setTimeout(() => {
+                    if (!longPressTriggered.current) {
+                        onPress();
+                    }
+                }, 0);
+            }}
+            onLongPress={onLongPressAction}
+            onPressOut={handlePressOut}
+            style={[styles.mainDmgOpacity]}>
             <ExoText style={[styles.mainDmgButtonText]}>{text}</ExoText>
         </TouchableOpacity>
     );
@@ -44,17 +76,17 @@ export default function Damage({
         }, 1750);
     }
 
-    const onAddPress = () => {
-        addDmg();
+    const onAddPress = (dmgValue) => {
+        addDmg(dmgValue);
         if (showRecentDmg) {
-            doRecentDmg(() => setRecentDmg(recentDmg + 1));
+            doRecentDmg(() => setRecentDmg((prevDmg) => prevDmg + dmgValue));
         }
     };
 
-    const onSubPress = () => {
-        subtractDmg();
+    const onSubPress = (dmgValue) => {
+        subtractDmg(dmgValue);
         if (showRecentDmg) {
-            doRecentDmg(() => setRecentDmg(recentDmg - 1));
+            doRecentDmg(() => setRecentDmg((prevDmg) => prevDmg - dmgValue));
         }
     };
 
@@ -66,11 +98,12 @@ export default function Damage({
             {showRecentDmg && <View style={[styles.recentDmg, {top: recentDmgPosition}]}>
                 <ExoText style={[styles.recentDmgText]}>{recentDmg}</ExoText>
             </View>}
-            <DamageHitBox style={[styles.mainDmgOpacity]} onPress={onSubPress} text="-"/>
+            <DamageHitBox style={[styles.mainDmgOpacity]} onPress={() => onSubPress(1)}
+                          onLongPress={() => onSubPress(10)} text="-"/>
             <View style={[styles.lifeBox]}>
                 <ExoText style={[styles.lifeText]}>{hitPoints}</ExoText>
             </View>
-            <DamageHitBox onPress={onAddPress} text="+"/>
+            <DamageHitBox onPress={() => onAddPress(1)} onLongPress={() => onAddPress(10)} text="+"/>
         </View>
     );
 }

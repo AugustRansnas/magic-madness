@@ -86,15 +86,15 @@ function updatePlayer(state, player, updateValue) {
     }
 }
 
-function doDamage(player) {
+function doDamage({player, dmgValue}) {
     return {
-        life: player.life + 1
+        life: player.life + dmgValue
     };
 }
 
-function healLife(player) {
+function healLife({player, dmgValue}) {
     return {
-        life: player.life - 1
+        life: player.life - dmgValue
     };
 }
 
@@ -129,12 +129,12 @@ function removeCommanderDamage(player, commanderId) {
     return {};
 }
 
-export function addDamage(state, player) {
-    return updatePlayer(state, player, doDamage(player));
+export function addDamage(state, {player, dmgValue}) {
+    return updatePlayer(state, player, doDamage({player, dmgValue}));
 }
 
-export function subtractDamage(state, player) {
-    return updatePlayer(state, player, healLife(player));
+export function subtractDamage(state, {player, dmgValue}) {
+    return updatePlayer(state, player, healLife({player, dmgValue}));
 }
 
 export function addCommanderDmg(state, {player, commanderId}) {
