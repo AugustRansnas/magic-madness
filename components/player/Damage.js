@@ -1,11 +1,12 @@
 import React, {useCallback, useEffect, useRef, useState} from "react";
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import {StyleSheet, TouchableHighlight, View} from "react-native";
 import * as core from "../../store/core";
 import ExoText from "../buildingblocks/ExoText";
-import * as Haptics from 'expo-haptics';
+import * as Haptics from "expo-haptics";
 
 
 function DamageHitBox({onPress, onLongPress, text}) {
+    const [isPressed, setPressed] = useState(false);
     const onLongPressTimer = useRef(null);
     const pressTimer = useRef(null);
     const longPressTriggered = useRef(false);
@@ -27,10 +28,12 @@ function DamageHitBox({onPress, onLongPress, text}) {
         clearTimeout(pressTimer.current);
         clearInterval(onLongPressTimer.current);
         longPressTriggered.current = false;
+        setPressed(false)
     };
 
     return (
-        <TouchableOpacity
+        <TouchableHighlight
+            underlayColor="transparent"
             onPress={() => {
                 pressTimer.current = setTimeout(() => {
                     if (!longPressTriggered.current) {
@@ -40,9 +43,14 @@ function DamageHitBox({onPress, onLongPress, text}) {
             }}
             onLongPress={onLongPressAction}
             onPressOut={handlePressOut}
+            onShowUnderlay={() => setPressed(true)}
+            onHideUnderlay={() => setPressed(false)}
             style={[styles.mainDmgOpacity]}>
-            <ExoText style={[styles.mainDmgButtonText]}>{text}</ExoText>
-        </TouchableOpacity>
+            <>
+                <ExoText style={[styles.mainDmgButtonText]}>{text}</ExoText>
+                {isPressed && <View style={styles.overlay}/>}
+            </>
+        </TouchableHighlight>
     );
 }
 
@@ -68,7 +76,7 @@ export default function Damage({
 
     useEffect(() => {
         Haptics.selectionAsync(Haptics.ImpactFeedbackStyle.Heavy);
-    }, [recentDmg])
+    }, [recentDmg]);
 
     function doRecentDmg(fn) {
         clearTimeout(timer.current);
@@ -142,5 +150,9 @@ const styles = StyleSheet.create({
     },
     mainDmgButtonText: {
         fontSize: 60
+    },
+    overlay: {
+        ...StyleSheet.absoluteFillObject,
+        backgroundColor: "rgba(255, 255, 255, 0.3)",
     }
 });
