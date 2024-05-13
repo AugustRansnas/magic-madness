@@ -54,7 +54,7 @@ export function createInitialState() {
             createPlayer(2)
         ],
         settings: {
-            backgroundAnimationEnabled: false
+            backgroundAnimationEnabled: true
         }
     }
 }

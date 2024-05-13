@@ -4,6 +4,7 @@ import {Canvas, extend, useFrame, useThree} from "@react-three/fiber/native";
 import {shaderMaterial} from "@react-three/drei/native";
 import {StyleSheet, View} from "react-native";
 import * as core from "../../store/core";
+import {useStore} from "../../store/store";
 
 const TheShader = shaderMaterial(
     // Uniform
@@ -78,7 +79,7 @@ function Mesh() {
 
     return (
         <mesh ref={mesh}>
-            <planeGeometry args={[size.width, size.height]} />
+            <planeGeometry args={[size.width, size.height]}/>
             <theShader uResolution={[pixelWidth, pixelHeight, 0]}/>
         </mesh>
     );
@@ -86,11 +87,13 @@ function Mesh() {
 
 
 export default function BackgroundShader() {
+    const {state} = useStore();
+    const animationEnabled = core.isBackgroundAnimationEnabled(state);
     return (
         <View style={styles.container}>
             <Canvas>
                 <Suspense fallback={null}>
-                    <Mesh/>
+                    {animationEnabled && <Mesh/>}
                 </Suspense>
             </Canvas>
         </View>

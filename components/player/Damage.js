@@ -28,7 +28,7 @@ function DamageHitBox({onPress, onLongPress, text}) {
         clearTimeout(pressTimer.current);
         clearInterval(onLongPressTimer.current);
         longPressTriggered.current = false;
-        setPressed(false)
+        setPressed(false);
     };
 
     return (
