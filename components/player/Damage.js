@@ -2,6 +2,7 @@ import React, {useCallback, useEffect, useRef, useState} from "react";
 import {StyleSheet, TouchableOpacity, View} from "react-native";
 import * as core from "../../store/core";
 import ExoText from "../buildingblocks/ExoText";
+import * as Haptics from 'expo-haptics';
 
 
 function DamageHitBox({onPress, onLongPress, text}) {
@@ -64,6 +65,10 @@ export default function Damage({
             mounted.current = false;
         };
     }, []);
+
+    useEffect(() => {
+        Haptics.selectionAsync(Haptics.ImpactFeedbackStyle.Heavy);
+    }, [recentDmg])
 
     function doRecentDmg(fn) {
         clearTimeout(timer.current);
