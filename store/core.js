@@ -26,13 +26,13 @@ export function getPixelWindow() {
 function getDefaultTheme(id) {
     switch (id) {
         case 1:
-            return rgbaThemes.SWAMP;
-        case 2:
             return rgbaThemes.MOUNTAIN;
-        case 3:
-            return rgbaThemes.FOREST;
-        case 4:
+        case 2:
             return rgbaThemes.ISLAND;
+        case 3:
+            return rgbaThemes.SWAMP;
+        case 4:
+            return rgbaThemes.FOREST;
     }
 }
 

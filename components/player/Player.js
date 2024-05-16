@@ -1,11 +1,12 @@
 import React, {useEffect, useRef} from "react";
-import {Animated, Easing, StyleSheet, View} from "react-native";
+import {Animated, Easing, ImageBackground, StyleSheet, View} from "react-native";
 import {useStore} from "../../store/store";
 import * as core from "../../store/core";
 import Stats from "./Stats";
 import Damage from "./Damage";
 import actions from "../../store/actions";
 import PlayerModal from "./modal/PlayerModal";
+import bg from "../../assets/splash-test.png";
 
 const rotations = {
     2: {
@@ -76,7 +77,7 @@ export default function Player({player}) {
     const playerWidth = getPlayerWidth(state, isRotated);
     const playerHeight = getPlayerHeight(state, isRotated);
 
-    return (<View style={[styles.playerContainer, {backgroundColor: player.theme}]}>
+    return (<View style={[styles.playerContainer, /*{backgroundColor: player.theme}*/]}>
         <Animated.View style={[{
             transform: [{
                 rotate: spin,

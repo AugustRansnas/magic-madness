@@ -40,7 +40,6 @@ export default function PlayerModal({player, playerHeight, playerWidth, rotation
                                 }],
                                 height: modalHeight, width: modalWidth
                             }]}>
-                                <Text style={styles.modalText}>Hello World!</Text>
                                 <CommanderDamage player={player}/>
                             </View>
                         </TouchableWithoutFeedback>

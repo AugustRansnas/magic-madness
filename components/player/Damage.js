@@ -75,7 +75,7 @@ export default function Damage({
     }, []);
 
     useEffect(() => {
-        Haptics.selectionAsync(Haptics.ImpactFeedbackStyle.Heavy);
+        Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
     }, [recentDmg]);
 
     function doRecentDmg(fn) {
@@ -107,7 +107,7 @@ export default function Damage({
 
 
     return (
-        <View style={styles.dmgContainer}>
+        <View style={[styles.dmgContainer]}>
             {showRecentDmg && <View style={[styles.recentDmg, {top: recentDmgPosition}]}>
                 <ExoText style={[styles.recentDmgText]}>{recentDmg}</ExoText>
             </View>}
