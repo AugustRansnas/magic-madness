@@ -8,7 +8,7 @@ export default function SelectNumberOfPlayers({setIsMenuOpen}) {
     const {dispatch} = useStore();
     return (
         <View style={styles.numOfPlayers}>
-            {[2, 3, 4].map((numOfPlayers) =>
+            {[2, 3, 4, 5, 6].map((numOfPlayers) =>
                 <TouchableOpacity key={numOfPlayers}
                                   onPress={() => {
                                       dispatch({type: actions.SET_MENU_OPEN, data: false})

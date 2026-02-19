@@ -13,10 +13,12 @@ const TheShader = shaderMaterial(
         uResolution: new Vector3(),
         uNumPlayers: 2, // Default to 2 players
         uColors: [
-            new Vector3(0.055, 0.408, 0.671), // Blue
-            new Vector3(0.827, 0.125, 0.161), // Red
-            new Vector3(0.0, 0.451, 0.239), // Green
-            new Vector3(0.082, 0.043, 0.0)  // Black
+            new Vector3(0.83, 0.13, 0.16),  // 0 Mountain (red)
+            new Vector3(0.05, 0.41, 0.67),  // 1: Island (blue)
+            new Vector3(0.08, 0.04, 0.00),  // 2: Swamp (black)
+            new Vector3(0.00, 0.45, 0.24),  // 3: Forest (green)
+            new Vector3(0.97, 0.91, 0.73),  // 4: Plains (white)
+            new Vector3(0.51, 0.23, 0.49)   // 5: Purple
         ]
     },
     // Vertex Shader
@@ -29,13 +31,13 @@ const TheShader = shaderMaterial(
     `
     #define TAU 6.28318530718
     #define TILING_FACTOR 1.0
-    #define MAX_ITER 9
+    #define MAX_ITER 5
 
     uniform vec3 uResolution;
     uniform float uTime;
     uniform int uNumPlayers;
-    uniform vec3 uColors[4];
-    
+    uniform vec3 uColors[6];
+
     float waterHighlight(vec2 p, float time, float foaminess) {
         vec2 i = vec2(p);
         float c = 0.0;
@@ -63,15 +65,33 @@ const TheShader = shaderMaterial(
         float horizontalMixFactor = smoothstep(0.40, 0.60, uv.x);
 
         if (uNumPlayers == 2) {
-            color = mix(blue, red, verticalMixFactor);
+            color = mix(uColors[1], uColors[0], verticalMixFactor);
         } else if (uNumPlayers == 3) {
-           vec3 bottom = blue;
-           vec3 topMix = mix(red, black, horizontalMixFactor); 
-           color = mix(bottom, topMix, verticalMixFactor);
+            vec3 bottom = uColors[2];
+            vec3 topMix = mix(uColors[0], uColors[1], horizontalMixFactor);
+            color = mix(bottom, topMix, verticalMixFactor);
         } else if (uNumPlayers == 4) {
-            vec3 bottomMix = mix(blue, green, horizontalMixFactor);
-            vec3 topMix = mix(red, black, horizontalMixFactor);
+            vec3 bottomMix = mix(uColors[2], uColors[3], horizontalMixFactor);
+            vec3 topMix = mix(uColors[0], uColors[1], horizontalMixFactor);
             color = mix(bottomMix, topMix, verticalMixFactor);
+        } else if (uNumPlayers == 5) {
+            // 5p: top pair (P1,P2) | middle pair (P3,P4) | bottom full (P5)
+            float row1 = smoothstep(0.60, 0.70, uv.y);
+            float row2 = smoothstep(0.25, 0.35, uv.y);
+            vec3 topMix = mix(uColors[0], uColors[1], horizontalMixFactor);
+            vec3 midMix = mix(uColors[2], uColors[3], horizontalMixFactor);
+            color = mix(uColors[4], midMix, row2);
+            color = mix(color, topMix, row1);
+        } else if (uNumPlayers == 6) {
+            // 6p: top full (P1) | pair (P2,P3) | pair (P4,P5) | bottom full (P6)
+            float row1 = smoothstep(0.72, 0.82, uv.y);
+            float row2 = smoothstep(0.45, 0.55, uv.y);
+            float row3 = smoothstep(0.18, 0.28, uv.y);
+            vec3 pair1 = mix(uColors[1], uColors[2], horizontalMixFactor);
+            vec3 pair2 = mix(uColors[3], uColors[4], horizontalMixFactor);
+            color = mix(uColors[5], pair2, row3);
+            color = mix(color, pair1, row2);
+            color = mix(color, uColors[0], row1);
         }
 
         return color;
@@ -88,14 +108,14 @@ const TheShader = shaderMaterial(
         vec2 p = mod(uv_square * TAU * TILING_FACTOR, TAU) - 250.0;
         float c = waterHighlight(p, time, foaminess);
     
-        vec3 water_color = vec3(0.0, 0.35, 0.5);
+        //vec3 water_color = vec3(0.0, 0.35, 0.5);
         vec3 color = vec3(c);
-        color = clamp(color + water_color, 0.0, 1.0);
-        color = mix(water_color, color, clearness);
+        //color = clamp(color + water_color, 0.0, 1.0);
+        //color = mix(water_color, color, clearness);
 
         // Blend the segment color with the water effect
         vec3 segmentColor = getSegmentColor(uv);
-        color = mix(segmentColor, color, 0.5);
+       color = mix(segmentColor, color, 0.5);
         
         gl_FragColor = vec4(color, 1.0);
     }

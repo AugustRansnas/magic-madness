@@ -5,7 +5,8 @@ export const rgbaThemes = {
     ISLAND: `rgba(14, 104, 171, ${transparency})`,
     SWAMP: `rgba(21, 11, 0, ${transparency})`,
     PLAINS: `rgba(248, 231, 185, ${transparency})`,
-    MOUNTAIN: `rgba(211, 32, 41, ${transparency})`
+    MOUNTAIN: `rgba(211, 32, 41, ${transparency})`,
+    PURPLE: `rgba(130, 59, 125, ${transparency})`
 };
 
 /*

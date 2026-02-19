@@ -16,33 +16,30 @@ function calculatePadding(isRotated) {
 
 export default function CommanderDamage({player, isRotated}) {
     const {state, dispatch} = useStore();
+    const opponents = state.players.filter(p => p.id !== player.id);
+    const fontSize = opponents.length > 3 ? 30 : 50;
 
     return (
         <View style={[styles.container, {...calculatePadding(isRotated)}]}>
-            {state.players.map((p, index) => {
-                    if (p.id !== player.id) {
-                        return (
-                            <View key={`${player.id}-${index}`} style={[styles.commanderBox, {backgroundColor: p.theme}]}>
-                                <TouchableOpacity style={[styles.button]} onPress={() => dispatch({
-                                    type: actions.ADD_COMMANDER_DAMAGE,
-                                    data: {player, commanderId: p.id}
-                                })}>
-                                    <ExoText style={[styles.text]}>+</ExoText>
-                                </TouchableOpacity>
-                                <View style={[styles.counter]}>
-                                    <ExoText style={[styles.text]}>{player.commanderDamage[p.id] || 0}</ExoText>
-                                </View>
-                                <TouchableOpacity style={[styles.button]} onPress={() => dispatch({
-                                    type: actions.SUBTRACT_COMMANDER_DAMAGE,
-                                    data: {player, commanderId: p.id}
-                                })}>
-                                    <ExoText style={[styles.text]}>-</ExoText>
-                                </TouchableOpacity>
-                            </View>
-                        );
-                    }
-                }
-            )}
+            {opponents.map((p) => (
+                <View key={`${player.id}-${p.id}`} style={[styles.commanderBox, {backgroundColor: p.theme}]}>
+                    <TouchableOpacity style={[styles.button]} onPress={() => dispatch({
+                        type: actions.ADD_COMMANDER_DAMAGE,
+                        data: {player, commanderId: p.id}
+                    })}>
+                        <ExoText style={[styles.text, {fontSize}]}>+</ExoText>
+                    </TouchableOpacity>
+                    <View style={[styles.counter]}>
+                        <ExoText style={[styles.text, {fontSize}]}>{player.commanderDamage[p.id] || 0}</ExoText>
+                    </View>
+                    <TouchableOpacity style={[styles.button]} onPress={() => dispatch({
+                        type: actions.SUBTRACT_COMMANDER_DAMAGE,
+                        data: {player, commanderId: p.id}
+                    })}>
+                        <ExoText style={[styles.text, {fontSize}]}>-</ExoText>
+                    </TouchableOpacity>
+                </View>
+            ))}
         </View>
     );
 }
@@ -51,6 +48,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: "row",
+        flexWrap: "wrap",
     },
     commanderBox: {
         flex: 1,
@@ -67,7 +65,6 @@ const styles = StyleSheet.create({
         justifyContent: "center"
     },
     text: {
-        fontSize: 50,
         alignSelf: "center",
         fontWeight: "bold"
     }

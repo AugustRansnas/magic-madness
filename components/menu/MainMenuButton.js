@@ -6,23 +6,31 @@ import * as core from "../../store/core";
 import MenuButtonOpenSvg from "../svg-react/MenuButtonOpenSvg";
 import MenuButtonClosedSvg from "../svg-react/MenuButtonClosedSvg";
 
+function getMenuVerticalPosition(numberOfPlayers, windowHeight) {
+    switch (numberOfPlayers) {
+        case 5: return windowHeight * 0.70; // after two 35% rows
+        default: return windowHeight / 2;   // center for 2/3/4/6 players
+    }
+}
+
 export default function MainMenuButton() {
     const {windowWidth, windowHeight} = core.getWindow();
     const {state, dispatch} = useStore();
     const isMenuOpen = state.menuOpen;
+    const numberOfPlayers = core.getNumberOfPlayers(state);
     const [showMagicBalls, setShowMagicBalls] = useState(false);
 
     const menuButtonHeight = 90;
     const menuButtonWidth = 90;
 
     const calculatedPositions = useMemo(() => {
-        const center = (windowHeight / 2) - (menuButtonHeight / 2);
+        const center = getMenuVerticalPosition(numberOfPlayers, windowHeight) - (menuButtonHeight / 2);
         const offset = (windowHeight / 15);
         return {
             left: (windowWidth / 2) - (menuButtonWidth / 2),
             top: isMenuOpen ? center - offset : center
         };
-    }, [isMenuOpen]);
+    }, [isMenuOpen, numberOfPlayers]);
 
     const topPositionAnimation = useRef(new Animated.Value(calculatedPositions.top)).current;
     const rotation = useRef(new Animated.Value(0)).current;

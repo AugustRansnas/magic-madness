@@ -9,10 +9,12 @@ const pixelWidth = windowWidth * ratio;
 const pixelHeight = windowHeight * ratio;
 
 const playerThemes = [
-    rgbaThemes.PLAINS,
     rgbaThemes.MOUNTAIN,
+    rgbaThemes.ISLAND,
+    rgbaThemes.SWAMP,
     rgbaThemes.FOREST,
-    rgbaThemes.ISLAND
+    rgbaThemes.PLAINS,
+    rgbaThemes.PURPLE
 ]
 
 export function getWindow() {
@@ -33,6 +35,10 @@ function getDefaultTheme(id) {
             return rgbaThemes.SWAMP;
         case 4:
             return rgbaThemes.FOREST;
+        case 5:
+            return rgbaThemes.PLAINS;
+        case 6:
+            return rgbaThemes.PURPLE;
     }
 }
 
@@ -107,6 +113,7 @@ function doCommanderDamage(player, commanderId) {
     const commanderDamage = getCommanderDamageForId(player, commanderId);
     if (commanderDamage < 21) {
         return {
+            life: player.life - 1,
             commanderDamage: {
                 ...player.commanderDamage,
                 [commanderId]: commanderDamage + 1
@@ -120,6 +127,7 @@ function removeCommanderDamage(player, commanderId) {
     const commanderDamage = getCommanderDamageForId(player, commanderId);
     if (commanderDamage > 0) {
         return {
+            life: player.life + 1,
             commanderDamage: {
                 ...player.commanderDamage,
                 [commanderId]: commanderDamage - 1
@@ -167,25 +175,48 @@ export function resetLife(state) {
     return {
         ...state,
         players: state.players.map((player) => (
-            {...player, life: 40, commanderDamage: 0}
+            {...player, life: 40, commanderDamage: {}}
         ))
     }
 }
 
-export function getFirstPlayerHalf({players}) {
+export function getPlayerRows({players}) {
     const length = players.length;
-    if (length === 4 || length === 3) {
-        return players.slice(0, 2)
+    switch (length) {
+        case 2:
+            return [
+                {players: players.slice(0, 1), type: 'bottom'},
+                {players: players.slice(1, 2), type: 'bottom'}
+            ];
+        case 3:
+            return [
+                {players: players.slice(0, 2), type: 'half'},
+                {players: players.slice(2, 3), type: 'bottom'}
+            ];
+        case 4:
+            return [
+                {players: players.slice(0, 2), type: 'half'},
+                {players: players.slice(2, 4), type: 'half'}
+            ];
+        case 5:
+            return [
+                {players: players.slice(0, 2), type: 'half'},
+                {players: players.slice(2, 4), type: 'half'},
+                {players: players.slice(4, 5), type: 'bottom'}
+            ];
+        case 6:
+            return [
+                {players: players.slice(0, 1), type: 'top'},
+                {players: players.slice(1, 3), type: 'half'},
+                {players: players.slice(3, 5), type: 'half'},
+                {players: players.slice(5, 6), type: 'bottom'}
+            ];
+        default:
+            return [
+                {players: players.slice(0, 1), type: 'bottom'},
+                {players: players.slice(1, 2), type: 'bottom'}
+            ];
     }
-    return players.slice(0, 1)
-}
-
-export function getSecondPlayerHalf({players}) {
-    const length = players.length;
-    if (length === 4) {
-        return players.slice(-2)
-    }
-    return players.slice(-1)
 }
 
 export function switchTheme(state, player) {

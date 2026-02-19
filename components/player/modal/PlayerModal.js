@@ -1,24 +1,22 @@
 import React, {useState} from "react";
 import {
-    Alert,
     Modal,
     StyleSheet,
-    Text,
     Pressable,
     View,
+    TouchableOpacity,
     TouchableWithoutFeedback,
 } from "react-native";
-import ExoText from "../../buildingblocks/ExoText";
 import * as core from "../../../store/core";
-import DamageHitBox from "../DamageHitBox";
+import {useStore} from "../../../store/store";
+import ExoText from "../../buildingblocks/ExoText";
 import CommanderDamage from "./CommanderDamage";
 
-export default function PlayerModal({player, playerHeight, playerWidth, rotation}) {
+export default function PlayerModal({player, playerHeight, playerWidth}) {
     const [playerModalVisible, setPlayerModalVisible] = useState(false);
     const {windowWidth, windowHeight} = core.getWindow();
-    const isSideWays = rotation === 90 || rotation === -90;
-    const modalHeight = isSideWays ? windowWidth - 20 : windowHeight - 300;
-    const modalWidth = isSideWays ? windowHeight - 300 : windowWidth - 20;
+    const modalHeight = windowHeight * 0.70;
+    const modalWidth = windowWidth * 0.85;
 
     return (
         <>
@@ -26,21 +24,24 @@ export default function PlayerModal({player, playerHeight, playerWidth, rotation
                 animationType="fade"
                 transparent={true}
                 visible={playerModalVisible}
-                onRequestClose={() => {
-                    setPlayerModalVisible(!playerModalVisible);
-                }}
+                onRequestClose={() => setPlayerModalVisible(false)}
             >
                 <TouchableWithoutFeedback onPress={() => setPlayerModalVisible(false)}>
                     <View style={styles.centeredView}>
-                        <TouchableWithoutFeedback onPress={() => {
-                        }}>
-                            <View style={[styles.modalView, {
-                                transform: [{
-                                    rotate: `${rotation}deg`
-                                }],
-                                height: modalHeight, width: modalWidth
+                        <TouchableWithoutFeedback onPress={() => {}}>
+                            <View style={[styles.modalContainer, {
+                                height: modalHeight,
+                                width: modalWidth
                             }]}>
-                                <CommanderDamage player={player}/>
+                                <TouchableOpacity
+                                    style={styles.closeButton}
+                                    onPress={() => setPlayerModalVisible(false)}
+                                >
+                                    <ExoText style={styles.closeText}>✕</ExoText>
+                                </TouchableOpacity>
+                                <View style={styles.boardArea}>
+                                    <CommanderDamage player={player}/>
+                                </View>
                             </View>
                         </TouchableWithoutFeedback>
                     </View>
@@ -50,32 +51,50 @@ export default function PlayerModal({player, playerHeight, playerWidth, rotation
             <Pressable
                 style={[styles.playerModalButton, {top: (playerHeight / 2) - 40}]}
                 onPress={() => setPlayerModalVisible(true)}
-            >
-            </Pressable>
+            />
         </>
     );
-};
+}
 
 const styles = StyleSheet.create({
     centeredView: {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0,0,0,0.4)"  // Semi-transparent background
+        backgroundColor: "rgba(0,0,0,0.6)",
     },
-    modalView: {
-        padding: 30,
-        backgroundColor: "white",
-        borderRadius: 20,
-        alignItems: "center",
+    modalContainer: {
+        borderRadius: 16,
+        overflow: "hidden",
+        backgroundColor: "#1a1a1a",
         shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5
+        shadowOffset: {width: 0, height: 4},
+        shadowOpacity: 0.3,
+        shadowRadius: 8,
+        elevation: 8,
+    },
+    closeButton: {
+        position: "absolute",
+        top: 8,
+        right: 8,
+        zIndex: 10,
+        width: 36,
+        height: 36,
+        borderRadius: 18,
+        backgroundColor: "rgba(0,0,0,0.5)",
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    closeText: {
+        color: "white",
+        fontSize: 18,
+        fontWeight: "bold",
+    },
+    boardArea: {
+        flex: 1,
+        margin: 6,
+        borderRadius: 10,
+        overflow: "hidden",
     },
     playerModalButton: {
         position: "absolute",
@@ -83,24 +102,6 @@ const styles = StyleSheet.create({
         borderRadius: 20,
         padding: 40,
         elevation: 2,
-        backgroundColor: "rgba(255, 255, 255, 0)"
-        //backgroundColor: "black"
+        backgroundColor: "rgba(255, 255, 255, 0)",
     },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2
-    },
-    buttonClose: {
-        backgroundColor: "#2196F3",
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center"
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center"
-    }
 });

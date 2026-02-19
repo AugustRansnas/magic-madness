@@ -9,19 +9,11 @@ import PlayerModal from "./modal/PlayerModal";
 import bg from "../../assets/splash-test.png";
 
 const rotations = {
-    2: {
-        1: 180,
-        2: 0
-    }, 3: {
-        1: 90,
-        2: -90,
-        3: 0,
-    }, 4: {
-        1: 90,
-        2: -90,
-        3: 90,
-        4: -90
-    }
+    2: {1: 180, 2: 0},
+    3: {1: 90, 2: -90, 3: 0},
+    4: {1: 90, 2: -90, 3: 90, 4: -90},
+    5: {1: 90, 2: -90, 3: 90, 4: -90, 5: 0},
+    6: {1: 180, 2: 90, 3: -90, 4: 90, 5: -90, 6: 0}
 };
 
 
@@ -30,30 +22,43 @@ function calculateRotation(numberOfPlayers, id) {
 }
 
 function isPlayerRotated(numberOfPlayers, id) {
-    return numberOfPlayers > 2 && calculateRotation(numberOfPlayers, id) !== 0;
+    const rotation = calculateRotation(numberOfPlayers, id);
+    return rotation === 90 || rotation === -90;
 }
 
-function getPlayerWidth(state, isRotated) {
+function getRowHeightFraction(numberOfPlayers) {
+    switch (numberOfPlayers) {
+        case 2: case 3: case 4: return 1 / 2;
+        case 5: return 1 / 3;
+        case 6: return 1 / 4;
+        default: return 1 / 2;
+    }
+}
+
+function getPlayerWidth(state, isRotated, numberOfPlayers) {
     const {windowWidth, windowHeight} = core.getWindow();
     if (isRotated) {
+        const fraction = getRowHeightFraction(numberOfPlayers);
+        const rowHeight = windowHeight * fraction;
         if (state.menuOpen) {
-            return (windowHeight / 2) * 0.90;
+            return rowHeight * 0.90;
         }
-        return (windowHeight / 2);
+        return rowHeight;
     }
     return windowWidth;
 }
 
-function getPlayerHeight(state, isRotated) {
+function getPlayerHeight(state, isRotated, numberOfPlayers) {
     const {windowWidth, windowHeight} = core.getWindow();
     if (isRotated) {
         return (windowWidth / 2);
     }
-
+    const fraction = getRowHeightFraction(numberOfPlayers);
+    const rowHeight = windowHeight * fraction;
     if (state.menuOpen) {
-        return (windowHeight / 2) * 0.9;
+        return rowHeight * 0.9;
     }
-    return (windowHeight / 2);
+    return rowHeight;
 }
 
 export default function Player({player}) {
@@ -70,12 +75,13 @@ export default function Player({player}) {
     }, [numberOfPlayers, calculatedRotation]);
 
     const spin = rotation.interpolate({
-        inputRange: [-90, 90], outputRange: ["-90deg", "90deg"]
+        inputRange: [-180, -90, 0, 90, 180],
+        outputRange: ["-180deg", "-90deg", "0deg", "90deg", "180deg"]
     });
 
 
-    const playerWidth = getPlayerWidth(state, isRotated);
-    const playerHeight = getPlayerHeight(state, isRotated);
+    const playerWidth = getPlayerWidth(state, isRotated, numberOfPlayers);
+    const playerHeight = getPlayerHeight(state, isRotated, numberOfPlayers);
 
     return (<View style={[styles.playerContainer, /*{backgroundColor: player.theme}*/]}>
         <Animated.View style={[{
