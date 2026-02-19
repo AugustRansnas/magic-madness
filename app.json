@@ -5,11 +5,6 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "splash": {
-      "image": "./assets/splash-test.png",
-      "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
-    },
     "updates": {
       "fallbackToCacheTimeout": 0
     },
@@ -17,7 +12,8 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "bundleIdentifier": "com.augustransnas.magic-madness"
     },
     "android": {
       "adaptiveIcon": {
@@ -28,22 +24,6 @@
     "web": {
       "favicon": "./assets/favicon.png"
     },
-    "packagerOpts": {
-      "config": "metro.config.js",
-      "sourceExts": [
-        "expo.ts",
-        "expo.tsx",
-        "expo.js",
-        "expo.jsx",
-        "ts",
-        "tsx",
-        "js",
-        "jsx",
-        "json",
-        "wasm",
-        "svg"
-      ]
-    },
     "extra": {
       "eas": {
         "projectId": "5ab88f70-88c9-4fcd-b505-b54221734d12"
@@ -51,7 +31,15 @@
     },
     "owner": "augustransnas",
     "plugins": [
-      "expo-font"
+      "expo-font",
+      [
+        "expo-splash-screen",
+        {
+          "backgroundColor": "#ffffff",
+          "image": "./assets/splash-test.png",
+          "imageWidth": 200
+        }
+      ]
     ]
   }
 }

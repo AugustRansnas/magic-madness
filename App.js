@@ -10,6 +10,14 @@ import MainBoard from "./components/MainBoard";
 
 SplashScreen.preventAutoHideAsync();
 
+// Suppress React.Fragment style warning from @react-three/fiber's bundled reconciler (fixed in v10)
+// TODO: Remove this when we upgrade to @react-three/fiber v10 or later
+const origError = console.error;
+console.error = (...args) => {
+    if (typeof args[0] === "string" && args[0].includes("React.Fragment can only have")) return;
+    origError.apply(console, args);
+};
+
 const cacheImages = images => {
     return images.map(image => {
         if (typeof image === "string") {
